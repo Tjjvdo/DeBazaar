@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Contract;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -46,6 +47,14 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
+
+        if ($user->user_type == 2) {
+            Contract::create([
+                'user_id' => $user->id,
+                'pdf_path' => null,
+                'accepted' => false,
+            ]);
+        }
 
         Auth::login($user);
 

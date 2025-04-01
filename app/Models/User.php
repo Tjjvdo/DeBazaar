@@ -46,4 +46,9 @@ class User extends Authenticatable
             'user_type' => 'integer',
         ];
     }
+
+    public function contract()
+    {
+        return $this->hasOne(Contract::class);
+    }
 }
