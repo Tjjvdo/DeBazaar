@@ -425,7 +425,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $testClassName
+     * @psalm-param class-string $testClassName
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
@@ -477,7 +477,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $testClassName
+     * @psalm-param class-string $testClassName
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
@@ -1065,7 +1065,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $testClassName
+     * @psalm-param class-string $testClassName
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
@@ -1117,7 +1117,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $testClassName
+     * @psalm-param class-string $testClassName
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
@@ -1169,7 +1169,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $testClassName
+     * @psalm-param class-string $testClassName
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
