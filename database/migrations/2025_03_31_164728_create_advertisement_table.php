@@ -15,8 +15,11 @@ return new class extends Migration {
             $table->string('title');
             $table->double('price');
             $table->string('information');
+            $table->integer('advertiser_id');
             $table->timestamp('created_at');
             $table->timestamp('inactive_at')->nullable();
+
+            $table->foreign('advertiser_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('advertisement_related', function (Blueprint $table) {

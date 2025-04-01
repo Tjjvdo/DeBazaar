@@ -23,6 +23,18 @@
                             </x-nav-link>
                         @endif
 
+                        @if (Auth::user()->user_type > 0)
+                            <x-nav-link href="/Advertisement">
+                                {{ __('Advertenties') }}
+                            </x-nav-link>
+                        @endif
+
+                        @if (Auth::user()->user_type > 0)
+                            <x-nav-link href="/NewAdvertisement">
+                                {{ __('Nieuwe advertentie maken') }}
+                            </x-nav-link>
+                        @endif
+
                         @if (Auth::user()->user_type == 1)
                             <x-nav-link href="#">
                                 {{ __('Advertiser Dashboard') }}

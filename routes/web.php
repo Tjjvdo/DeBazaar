@@ -9,9 +9,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/NewAdvertisement', function () {
-    return view('newAdvertisement');
-});
+Route::get('/NewAdvertisement', [AdvertisementController::class,'newAdvertisement']);
 
 Route::post('/NewAdvertisement', [AdvertisementController::class, 'addAdvertisement']);
 
