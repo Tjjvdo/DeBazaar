@@ -15,6 +15,32 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @auth
+                        @if (Auth::user()->user_type == 0)
+                            <x-nav-link href="#">
+                                {{ __('Shop') }}
+                            </x-nav-link>
+                        @endif
+
+                        @if (Auth::user()->user_type == 1)
+                            <x-nav-link href="#">
+                                {{ __('Advertiser Dashboard') }}
+                            </x-nav-link>
+                        @endif
+
+                        @if (Auth::user()->user_type == 2)
+                            <x-nav-link href="#">
+                                {{ __('Business Tools') }}
+                            </x-nav-link>
+                        @endif
+
+                        @if (Auth::user()->user_type == 3)
+                            <x-nav-link href="#">
+                                {{ __('Owner Tools') }}
+                            </x-nav-link>
+                        @endif
+                    @endauth
                 </div>
             </div>
 
