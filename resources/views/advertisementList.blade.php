@@ -21,10 +21,10 @@
                                         <x-slot:created_at>{{ $advertisement->created_at->format('d-m-Y H:i') }}</x-slot:created_at>
                                     </x-advertisement>
                                     <div class="mt-4 flex space-x-2">
-                                        <a href="/Advertisements/{{ $advertisement->id }}/View"
+                                        <a href="{{ route('viewAdvertisement', $advertisement->id) }}"
                                             class="bg-blue-500 hover:bg-blue-700 !important text-white font-bold py-2 px-4 rounded">Bekijken</a>
                                         @if (Auth::user()->id == $advertisement->advertiser_id)
-                                            <a href="/Advertisements/{{ $advertisement->id }}/Update"
+                                            <a href="{{ route('getUpdateAdvertisement', $advertisement->id) }}"
                                                 class="bg-green-500 hover:bg-green-700 !important text-white font-bold py-2 px-4 rounded">Update</a>
                                         @endif
                                     </div>
