@@ -30,7 +30,7 @@ class ContractController extends Controller
         return $this->generateSampleContract($user_id);
     }
 
-    public function generateSampleContract($user_id)
+    private function generateSampleContract($user_id)
     {
         $contract = Contract::where('user_id', $user_id)->first();
         if (!$contract) {
@@ -48,5 +48,48 @@ class ContractController extends Controller
         $pdf = Pdf::loadView('contracts.template', $data);
 
         return $pdf->download("contract_user_{$businessName}.pdf");
+    }
+
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'contract_pdf' => 'required|file|mimes:pdf|max:2048',
+        ]);
+
+        $path = $request->file('contract_pdf')->store('contracts', 'public');
+
+        $contract = Contract::where('user_id', $request->user_id)->first();
+        if ($contract) {
+            $contract->update([
+                'pdf_path' => $path,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Contract uploaded successfully.');
+    }
+
+    public function showAdvertiserContract()
+    {
+        $contract = Contract::where('user_id', auth()->id())->first();
+
+        return view('contracts.advertiser-contract', compact('contract'));
+    }
+
+    public function respondToContract(Request $request)
+    {
+        $request->validate([
+            'response' => 'required|in:accept,decline',
+        ]);
+
+        $contract = Contract::where('user_id', auth()->id())->first();
+        if (!$contract) {
+            return redirect()->back()->with('error', 'No contract found.');
+        }
+
+        $contract->accepted = $request->response === 'accept';
+        $contract->save();
+
+        return redirect()->route('contracts.advertiser')->with('success', 'Your response has been recorded.');
     }
 }

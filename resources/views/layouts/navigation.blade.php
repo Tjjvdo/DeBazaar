@@ -30,8 +30,8 @@
                         @endif
 
                         @if (Auth::user()->user_type == 2)
-                            <x-nav-link href="#">
-                                {{ __('Business Tools') }}
+                            <x-nav-link :href="route('contracts.advertiser')" :active="request()->routeIs('contracts.advertiser')">
+                                {{ __('Pending Contract') }}
                             </x-nav-link>
                         @endif
 
