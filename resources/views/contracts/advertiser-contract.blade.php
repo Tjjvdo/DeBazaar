@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-                @if($contract && $contract->pdf_path)
+                @if($contract && $contract->pdf_path && !$contract->accepted)
                     <h3 class="text-lg text-gray-700 dark:text-gray-300 font-bold mb-4">Your Contract</h3>
                     
                     <iframe src="{{ asset('storage/' . $contract->pdf_path) }}" width="100%" height="500px"></iframe>
