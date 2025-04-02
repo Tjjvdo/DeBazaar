@@ -27,9 +27,6 @@
                             <x-nav-link href="{{ route('getMyAdvertisements') }}">
                                 {{ __('Mijn advertenties') }}
                             </x-nav-link>
-                        @endif
-
-                        @if (Auth::user()->user_type > 0)
                             <x-nav-link href="{{ route('newAdvertisements') }}">
                                 {{ __('Nieuwe advertentie maken') }}
                             </x-nav-link>

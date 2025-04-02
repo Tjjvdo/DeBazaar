@@ -1,11 +1,9 @@
 <?php
 
-
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContractController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,7 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/advertisements', [AdvertisementController::class, 'getAdvertisements'])->name('advertisements');
 });
 
-Route::middleware(['auth', 'checkUserType:1'])->group(function () {
+Route::middleware(['auth', 'checkUserTypes:1,2'])->group(function () {
     Route::get('/newAdvertisement', [AdvertisementController::class, 'newAdvertisement'])->name('newAdvertisements');
     Route::post('/newAdvertisement', [AdvertisementController::class, 'addAdvertisement'])->name('addAdvertisements');
     Route::get('/myAdvertisements', [AdvertisementController::class, 'getMyAdvertisements'])->name('getMyAdvertisements');
