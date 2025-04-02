@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Http\\Controllers\\AdvertisementController' => $baseDir . '/app/Http/Controllers/AdvertisementController.php',
     'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => $baseDir . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
     'App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController' => $baseDir . '/app/Http/Controllers/Auth/EmailVerificationNotificationController.php',
@@ -21,9 +22,12 @@ return array(
     'App\\Http\\Middleware\\CheckUserType' => $baseDir . '/app/Http/Middleware/CheckUserType.php',
     'App\\Http\\Requests\\Auth\\LoginRequest' => $baseDir . '/app/Http/Requests/Auth/LoginRequest.php',
     'App\\Http\\Requests\\ProfileUpdateRequest' => $baseDir . '/app/Http/Requests/ProfileUpdateRequest.php',
+    'App\\Models\\Advertisement' => $baseDir . '/app/Models/Advertisement.php',
     'App\\Models\\Contract' => $baseDir . '/app/Models/Contract.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
+    'App\\Models\\advertisementRelated' => $baseDir . '/app/Models/advertisementRelated.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
+    'App\\View\\Components\\Advertisment' => $baseDir . '/app/View/Components/Advertisment.php',
     'App\\View\\Components\\AppLayout' => $baseDir . '/app/View/Components/AppLayout.php',
     'App\\View\\Components\\GuestLayout' => $baseDir . '/app/View/Components/GuestLayout.php',
     'App\\View\\Components\\RadioGroup' => $baseDir . '/app/View/Components/RadioGroup.php',
@@ -4365,7 +4369,6 @@ return array(
     'PHPUnit\\TextUI\\XmlConfiguration\\RemoveCacheTokensAttribute' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveCacheTokensAttribute.php',
     'PHPUnit\\TextUI\\XmlConfiguration\\RemoveConversionToExceptionsAttributes' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveConversionToExceptionsAttributes.php',
     'PHPUnit\\TextUI\\XmlConfiguration\\RemoveCoverageElementCacheDirectoryAttribute' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveCoverageElementCacheDirectoryAttribute.php',
-    'PHPUnit\\TextUI\\XmlConfiguration\\RemoveCoverageElementIncludeUncoveredFilesAttribute' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveCoverageElementIncludeUncoveredFilesAttribute.php',
     'PHPUnit\\TextUI\\XmlConfiguration\\RemoveCoverageElementProcessUncoveredFilesAttribute' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveCoverageElementProcessUncoveredFilesAttribute.php',
     'PHPUnit\\TextUI\\XmlConfiguration\\RemoveEmptyFilter' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveEmptyFilter.php',
     'PHPUnit\\TextUI\\XmlConfiguration\\RemoveListeners' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveListeners.php',
