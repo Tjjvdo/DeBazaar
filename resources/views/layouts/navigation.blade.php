@@ -17,15 +17,15 @@
                     </x-nav-link>
 
                     @auth
-                        @if (Auth::user()->user_type == 0)
-                            <x-nav-link href="#">
+                        @if (Auth::user()->user_type >= 0)
+                            <x-nav-link href="/Advertisements">
                                 {{ __('Shop') }}
                             </x-nav-link>
                         @endif
 
                         @if (Auth::user()->user_type > 0)
-                            <x-nav-link href="/Advertisement">
-                                {{ __('Advertenties') }}
+                            <x-nav-link href="/MyAdvertisements">
+                                {{ __('Mijn advertenties') }}
                             </x-nav-link>
                         @endif
 
