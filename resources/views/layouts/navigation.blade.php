@@ -36,8 +36,8 @@
                         @endif
 
                         @if (Auth::user()->user_type == 3)
-                            <x-nav-link href="#">
-                                {{ __('Owner Tools') }}
+                            <x-nav-link :href="route('business-contracts')" :active="request()->routeIs('business-contracts')">
+                                {{ __('Business contracts') }}
                             </x-nav-link>
                         @endif
                     @endauth
