@@ -63,6 +63,7 @@ class ContractController extends Controller
         if ($contract) {
             $contract->update([
                 'pdf_path' => $path,
+                'status' => 'pending',
             ]);
         }
 
@@ -87,7 +88,14 @@ class ContractController extends Controller
             return redirect()->back()->with('error', 'No contract found.');
         }
 
-        $contract->accepted = $request->response === 'accept';
+        $status = "";
+        if($request == "accept"){
+            $status = "accepted";
+        } elseif ($request == "decline") {
+            $status = "declined";
+        }
+
+        $contract->status = $status;
         $contract->save();
 
         return redirect()->route('contracts.advertiser')->with('success', 'Your response has been recorded.');

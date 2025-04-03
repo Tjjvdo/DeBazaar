@@ -23,18 +23,12 @@
                             </x-nav-link>
                         @endif
 
-                        @if (Auth::user()->user_type > 0)
+                        @if (Auth::user()->user_type == 1 && Auth::user()->user_type == 2)
                             <x-nav-link href="{{ route('getMyAdvertisements') }}">
                                 {{ __('Mijn advertenties') }}
                             </x-nav-link>
                             <x-nav-link href="{{ route('newAdvertisements') }}">
                                 {{ __('Nieuwe advertentie maken') }}
-                            </x-nav-link>
-                        @endif
-
-                        @if (Auth::user()->user_type == 1)
-                            <x-nav-link href="#">
-                                {{ __('Advertiser Dashboard') }}
                             </x-nav-link>
                         @endif
 
