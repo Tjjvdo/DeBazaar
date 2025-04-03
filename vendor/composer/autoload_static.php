@@ -639,6 +639,7 @@ class ComposerStaticInit88970a0117c062eed55fa8728fc43833
         'App\\Http\\Middleware\\CheckContractStatus' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckContractStatus.php',
         'App\\Http\\Middleware\\CheckUserType' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckUserType.php',
         'App\\Http\\Middleware\\CheckUserTypes' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckUserTypes.php',
+        'App\\Http\\Middleware\\SetLocale' => __DIR__ . '/../..' . '/app/Http/Middleware/SetLocale.php',
         'App\\Http\\Requests\\Auth\\LoginRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Auth/LoginRequest.php',
         'App\\Http\\Requests\\ProfileUpdateRequest' => __DIR__ . '/../..' . '/app/Http/Requests/ProfileUpdateRequest.php',
         'App\\Models\\Advertisement' => __DIR__ . '/../..' . '/app/Models/Advertisement.php',

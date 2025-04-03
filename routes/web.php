@@ -1,43 +1,60 @@
 <?php
 
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContractController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\SetLocale;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware([SetLocale::class])->group(function () {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->middleware(['auth', 'verified'])->name('dashboard');
+
+    Route::middleware(['auth', 'checkUserType:3'])->group(function () {
+        Route::get('/business-contracts', [ContractController::class, 'index'])->name('business-contracts');
+        Route::get('/contracts/download/{user_id}', [ContractController::class, 'download'])->name('contracts.download');
+        Route::post('/contracts/upload', [ContractController::class, 'upload'])->name('contracts.upload');
+    });
+
+    Route::middleware(['auth', 'checkUserType:2', 'checkContractStatus:pending'])->group(function () {
+        Route::get('/my-contract', [ContractController::class, 'showAdvertiserContract'])->name('contracts.advertiser');
+        Route::post('/my-contract/respond', [ContractController::class, 'respondToContract'])->name('contracts.respond');
+    });
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::get('/advertisements', [AdvertisementController::class, 'getAdvertisements'])->name('advertisements');
+    });
+
+    Route::middleware(['auth', 'checkUserTypes:1,2', 'checkContractStatus:accepted'])->group(function () {
+        Route::get('/newAdvertisement', [AdvertisementController::class, 'newAdvertisement'])->name('newAdvertisements');
+        Route::post('/newAdvertisement', [AdvertisementController::class, 'addAdvertisement'])->name('addAdvertisements');
+        Route::get('/myAdvertisements', [AdvertisementController::class, 'getMyAdvertisements'])->name('getMyAdvertisements');
+        Route::get('/advertisements/{id}/View', [AdvertisementController::class, 'getSingleProduct'])->name('viewAdvertisement');
+        Route::get('/advertisements/{id}/Update', [AdvertisementController::class, 'getUpdateSingleProduct'])->name('getUpdateAdvertisement');
+        Route::post('/advertisements/{id}/Update', [AdvertisementController::class, 'postUpdateSingleProduct'])->name('postUpdateAdvertisement');
+    });
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth', 'checkUserType:3'])->group(function () {
-    Route::get('/business-contracts', [ContractController::class, 'index'])->name('business-contracts');
-    Route::get('/contracts/download/{user_id}', [ContractController::class, 'download'])->name('contracts.download');
-    Route::post('/contracts/upload', [ContractController::class, 'upload'])->name('contracts.upload');
-});
+Route::get('switch-language/{language}', function ($language) {
+    $availableLanguages = ['en', 'nl'];
+    
+    if (in_array($language, $availableLanguages)) {
+        session()->put('locale', $language);
+    }
 
-Route::middleware(['auth', 'checkUserType:2', 'checkContractStatus:pending'])->group(function () {
-    Route::get('/my-contract', [ContractController::class, 'showAdvertiserContract'])->name('contracts.advertiser');
-    Route::post('/my-contract/respond', [ContractController::class, 'respondToContract'])->name('contracts.respond');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/advertisements', [AdvertisementController::class, 'getAdvertisements'])->name('advertisements');
-});
-
-Route::middleware(['auth', 'checkUserTypes:1,2', 'checkContractStatus:accepted'])->group(function () {
-    Route::get('/newAdvertisement', [AdvertisementController::class, 'newAdvertisement'])->name('newAdvertisements');
-    Route::post('/newAdvertisement', [AdvertisementController::class, 'addAdvertisement'])->name('addAdvertisements');
-    Route::get('/myAdvertisements', [AdvertisementController::class, 'getMyAdvertisements'])->name('getMyAdvertisements');
-    Route::get('/advertisements/{id}/View', [AdvertisementController::class, 'getSingleProduct'])->name('viewAdvertisement');
-    Route::get('/advertisements/{id}/Update', [AdvertisementController::class, 'getUpdateSingleProduct'])->name('getUpdateAdvertisement');
-    Route::post('/advertisements/{id}/Update', [AdvertisementController::class, 'postUpdateSingleProduct'])->name('postUpdateAdvertisement');
-});
+    return redirect()->back();
+})->name('switch-language');
 
 require __DIR__ . '/auth.php';

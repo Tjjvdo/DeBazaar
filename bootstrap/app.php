@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\CheckUserType;
 use App\Http\Middleware\CheckUserTypes;
 use App\Http\Middleware\CheckContractStatus;
+use App\Http\Middleware\SetLocale;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'checkUserType' => CheckUserType::class,
             'checkUserTypes' => CheckUserTypes::class,
             'checkContractStatus' => CheckContractStatus::class,
+            \App\Http\Middleware\SetLocale::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
