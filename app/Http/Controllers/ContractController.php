@@ -89,15 +89,15 @@ class ContractController extends Controller
         }
 
         $status = "";
-        if($request == "accept"){
+        if ($request->input('response') == "accept") {
             $status = "accepted";
-        } elseif ($request == "decline") {
+        } elseif ($request->input('response') == "decline") {
             $status = "declined";
         }
 
         $contract->status = $status;
         $contract->save();
 
-        return redirect()->route('contracts.advertiser')->with('success', 'Your response has been recorded.');
+        return redirect()->route('advertisements')->with('success', 'Your response has been recorded.');
     }
 }

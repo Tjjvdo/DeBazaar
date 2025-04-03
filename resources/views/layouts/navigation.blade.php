@@ -17,28 +17,43 @@
                     </x-nav-link>
 
                     @auth
-                        @if (Auth::user()->user_type >= 0)
-                            <x-nav-link href="{{ route('advertisements') }}">
+                        @php
+                            $user = Auth::user();
+                            $contract = $user->contract;
+                        @endphp
+
+                        @if ($user->user_type >= 0)
+                            <x-nav-link href="{{ route('advertisements') }}" :active="request()->routeIs('advertisements')">
                                 {{ __('Shop') }}
                             </x-nav-link>
                         @endif
 
-                        @if (Auth::user()->user_type == 1 && Auth::user()->user_type == 2)
-                            <x-nav-link href="{{ route('getMyAdvertisements') }}">
-                                {{ __('Mijn advertenties') }}
-                            </x-nav-link>
-                            <x-nav-link href="{{ route('newAdvertisements') }}">
-                                {{ __('Nieuwe advertentie maken') }}
-                            </x-nav-link>
+                        @if ($user->user_type == 1 || $user->user_type == 2)
+                            @if($user->user_type == 2 && isset($contract))
+                                @if($contract->status === 'pending')
+                                    <x-nav-link :href="route('contracts.advertiser')" :active="request()->routeIs('contracts.advertiser')">
+                                        {{ __('Pending Contract') }}
+                                    </x-nav-link>
+                                @endif
+                                @if($contract->status === 'accepted')
+                                    <x-nav-link href="{{ route('getMyAdvertisements') }}" :active="request()->routeIs('getMyAdvertisements')">
+                                        {{ __('Mijn advertenties') }}
+                                    </x-nav-link>
+                                    <x-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
+                                        {{ __('Nieuwe advertentie maken') }}
+                                    </x-nav-link>
+                                @endif
+                            @else
+                                <x-nav-link href="{{ route('getMyAdvertisements') }}" :active="request()->routeIs('getMyAdvertisements')">
+                                    {{ __('Mijn advertenties') }}
+                                </x-nav-link>
+                                <x-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
+                                    {{ __('Nieuwe advertentie maken') }}
+                                </x-nav-link>
+                            @endif
                         @endif
 
-                        @if (Auth::user()->user_type == 2)
-                            <x-nav-link :href="route('contracts.advertiser')" :active="request()->routeIs('contracts.advertiser')">
-                                {{ __('Pending Contract') }}
-                            </x-nav-link>
-                        @endif
-
-                        @if (Auth::user()->user_type == 3)
+                        @if ($user->user_type == 3)
                             <x-nav-link :href="route('business-contracts')" :active="request()->routeIs('business-contracts')">
                                 {{ __('Business contracts') }}
                             </x-nav-link>
@@ -99,6 +114,50 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @auth
+                @php
+                    $user = Auth::user();
+                    $contract = $user->contract;
+                @endphp
+
+                @if ($user->user_type >= 0)
+                    <x-responsive-nav-link href="{{ route('advertisements') }}" :active="request()->routeIs('advertisements')">
+                        {{ __('Shop') }}
+                    </x-responsive-nav-link>
+                @endif
+
+                @if ($user->user_type == 1 || $user->user_type == 2)
+                    @if($user->user_type == 2 && isset($contract))
+                        @if($contract->status === 'pending')
+                            <x-responsive-nav-link :href="route('contracts.advertiser')" :active="request()->routeIs('contracts.advertiser')">
+                                {{ __('Pending Contract') }}
+                            </x-responsive-nav-link>
+                        @endif
+                        @if($contract->status === 'accepted')
+                            <x-responsive-nav-link href="{{ route('getMyAdvertisements') }}" :active="request()->routeIs('getMyAdvertisements')">
+                                {{ __('Mijn advertenties') }}
+                            </x-responsive-nav-link>
+                            <x-responsive-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
+                                {{ __('Nieuwe advertentie maken') }}
+                            </x-responsive-nav-link>
+                        @endif
+                    @else
+                        <x-responsive-nav-link href="{{ route('getMyAdvertisements') }}" :active="request()->routeIs('getMyAdvertisements')">
+                            {{ __('Mijn advertenties') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
+                            {{ __('Nieuwe advertentie maken') }}
+                        </x-responsive-nav-link>
+                    @endif
+                @endif
+
+                @if ($user->user_type == 3)
+                    <x-responsive-nav-link :href="route('business-contracts')" :active="request()->routeIs('business-contracts')">
+                        {{ __('Business contracts') }}
+                    </x-responsive-nav-link>
+                @endif
+            @endauth
         </div>
 
         <!-- Responsive Settings Options -->
