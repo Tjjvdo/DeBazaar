@@ -1,0 +1,12 @@
+<?php
+
+use Illuminate\Support\Sleep;
+use Laravel\Dusk\Browser;
+
+test('basic example', function () {
+    $this->browse(function (Browser $browser) {
+        $browser->visit('/')
+                ->assertSee('Laravel');
+        Sleep::for(5)->seconds();
+    });
+});

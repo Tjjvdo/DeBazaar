@@ -25,7 +25,7 @@
                             <label for="price"
                                 class="block text-lg font-medium text-gray-700 dark:text-gray-300">Prijs</label>
                             <div class="mt-2">
-                                <input type="text" id="price" name="price"
+                                <input type="number" id="price" name="price"
                                     class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-lg border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 p-2">
                             </div>
                         </div>
