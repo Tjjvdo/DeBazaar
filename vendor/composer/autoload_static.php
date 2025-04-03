@@ -4988,7 +4988,6 @@ class ComposerStaticInit88970a0117c062eed55fa8728fc43833
         'PHPUnit\\TextUI\\XmlConfiguration\\RemoveCacheTokensAttribute' => __DIR__ . '/..' . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveCacheTokensAttribute.php',
         'PHPUnit\\TextUI\\XmlConfiguration\\RemoveConversionToExceptionsAttributes' => __DIR__ . '/..' . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveConversionToExceptionsAttributes.php',
         'PHPUnit\\TextUI\\XmlConfiguration\\RemoveCoverageElementCacheDirectoryAttribute' => __DIR__ . '/..' . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveCoverageElementCacheDirectoryAttribute.php',
-        'PHPUnit\\TextUI\\XmlConfiguration\\RemoveCoverageElementIncludeUncoveredFilesAttribute' => __DIR__ . '/..' . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveCoverageElementIncludeUncoveredFilesAttribute.php',
         'PHPUnit\\TextUI\\XmlConfiguration\\RemoveCoverageElementProcessUncoveredFilesAttribute' => __DIR__ . '/..' . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveCoverageElementProcessUncoveredFilesAttribute.php',
         'PHPUnit\\TextUI\\XmlConfiguration\\RemoveEmptyFilter' => __DIR__ . '/..' . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveEmptyFilter.php',
         'PHPUnit\\TextUI\\XmlConfiguration\\RemoveListeners' => __DIR__ . '/..' . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveListeners.php',
