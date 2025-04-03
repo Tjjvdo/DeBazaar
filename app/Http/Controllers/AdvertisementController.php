@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
+use App\Models\Bid;
+use App\Models\Renting;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -21,17 +23,32 @@ class AdvertisementController extends Controller
         $title = $request->input("title");
         $price = $request->input("price");
         $information = $request->input("information");
+        $isRentable = $request->input("rentable");
 
-        Advertisement::create(
+        if ($isRentable) {
+            $isRentable = true;
+        } else {
+            $isRentable = false;
+        }
+
+        $advertisement = Advertisement::create(
             [
                 "title" => $title,
                 "price" => $price,
                 "information" => $information,
                 "created_at" => now(),
                 "advertiser_id" => Auth::user()->id,
+                "is_rentable" => $isRentable,
                 "inactive_at" => now()->addUTCWeeks(2),
             ]
         );
+
+        if (!$isRentable) {
+            Bid::create([
+                "advertisement_id" => $advertisement->id,
+                "bid_amount" => $price,
+            ]);
+        }
 
         return Redirect::route('getMyAdvertisements');
     }
@@ -39,6 +56,7 @@ class AdvertisementController extends Controller
     public function getAdvertisements()
     {
         $advertisements = Advertisement::where('inactive_at', '>', now())->orWhere('inactive_at', null)->get();
+
         return view("advertisementList", ["advertisements" => $advertisements, "title" => "Advertisements"]);
     }
 
@@ -46,7 +64,15 @@ class AdvertisementController extends Controller
     {
         $advertisement = Advertisement::where("id", $id)->first();
 
-        return view("viewProduct", ["advertisement" => $advertisement]);
+        if ($advertisement->is_rentable) {
+            $renting = Renting::where('advertisement_id', $id)->first();
+            $bidding = null;
+        } else {
+            $bidding = Bid::where('advertisement_id', $id)->first();
+            $renting = null;
+        }
+
+        return view("viewProduct", ["advertisement" => $advertisement, "renting" => $renting, "bidding" => $bidding]);
     }
 
     public function getMyAdvertisements()
@@ -77,5 +103,19 @@ class AdvertisementController extends Controller
             ]
         );
         return Redirect::route('getMyAdvertisements');
+    }
+
+    public function bidOnProduct($id, Request $request)
+    {
+        $bidAmount = $request->input("bid");
+
+        Bid::where('advertisement_id', $id)->update(
+            [
+                "bidder_id" => Auth::user()->id,
+                "bid_amount" => $bidAmount,
+            ]
+        );
+
+        return Redirect::route('viewAdvertisement', $id);
     }
 }

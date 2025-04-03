@@ -34,13 +34,14 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::get('/advertisements', [AdvertisementController::class, 'getAdvertisements'])->name('advertisements');
+        Route::get('/advertisements/{id}/View', [AdvertisementController::class, 'getSingleProduct'])->name('viewAdvertisement');
+        Route::post('/advertisements/{id}/View', [AdvertisementController::class, 'bidOnProduct'])->name('bidOnProduct');
     });
-
+    
     Route::middleware(['auth', 'checkUserTypes:1,2', 'checkContractStatus:accepted'])->group(function () {
         Route::get('/newAdvertisement', [AdvertisementController::class, 'newAdvertisement'])->name('newAdvertisements');
         Route::post('/newAdvertisement', [AdvertisementController::class, 'addAdvertisement'])->name('addAdvertisements');
         Route::get('/myAdvertisements', [AdvertisementController::class, 'getMyAdvertisements'])->name('getMyAdvertisements');
-        Route::get('/advertisements/{id}/View', [AdvertisementController::class, 'getSingleProduct'])->name('viewAdvertisement');
         Route::get('/advertisements/{id}/Update', [AdvertisementController::class, 'getUpdateSingleProduct'])->name('getUpdateAdvertisement');
         Route::post('/advertisements/{id}/Update', [AdvertisementController::class, 'postUpdateSingleProduct'])->name('postUpdateAdvertisement');
     });

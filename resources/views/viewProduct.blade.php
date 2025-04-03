@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('advertisements.advertisement') }}
+            {{ __('Advertentie bekijken') }}
         </h2>
     </x-slot>
 
@@ -17,6 +17,22 @@
                         <x-slot:id>{{ $advertisement->id }}</x-slot:id>
                     </x-advertisement>
                 </div>
+                <form action="{{ route('bidOnProduct', $advertisement->id) }}" method="post" class="space-y-6">
+                    @csrf
+                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                        @if ($advertisement->is_rentable)
+                        <p>huren</p>
+                        @else
+                        <label for="bid"
+                            class="block text-lg font-medium text-gray-700 dark:text-gray-300">Hoogste bod: {{$bidding->bid_amount}}</label>
+                        <div class="mt-2">
+                            <input type="number" id="bid" name="bid" min="{{$bidding->bid_amount + 1}}" 
+                                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-lg border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 p-2">
+                        </div>
+                        <button>Bieden</button>
+                        @endif
+                    </div>
+                </form>
             </div>
         </div>
     </div>
