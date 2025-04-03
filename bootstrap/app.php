@@ -4,6 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\CheckUserType;
+use App\Http\Middleware\CheckUserTypes;
+use App\Http\Middleware\CheckContractStatus;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,6 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'checkUserType' => CheckUserType::class,
+            'checkUserTypes' => CheckUserTypes::class,
+            'checkContractStatus' => CheckContractStatus::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

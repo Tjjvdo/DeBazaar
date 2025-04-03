@@ -12,7 +12,7 @@ class Contract extends Model
     protected $fillable = [
         'user_id',
         'pdf_path',
-        'accepted',
+        'status', // pending; declined; accepted;
     ];
 
     public function user()
