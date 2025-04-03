@@ -16,7 +16,7 @@
                             <label for="title"
                                 class="block text-lg font-medium text-gray-700 dark:text-gray-300">Title</label>
                             <div class="mt-2">
-                                <input type="text" id="title" name="title"
+                                <input type="text" id="title" name="title" required
                                     class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-lg border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 p-2">
                             </div>
                         </div>
@@ -25,7 +25,7 @@
                             <label for="price"
                                 class="block text-lg font-medium text-gray-700 dark:text-gray-300">Prijs</label>
                             <div class="mt-2">
-                                <input type="number" id="price" name="price"
+                                <input type="number" id="price" name="price" required
                                     class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-lg border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 p-2">
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                                 class="block text-lg font-medium text-gray-700 dark:text-gray-300">Informatie over het
                                 product</label>
                             <div class="mt-2">
-                                <textarea id="information" name="information" rows="4"
+                                <textarea id="information" name="information" rows="4" required
                                     class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-lg border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 p-2"></textarea>
                             </div>
                         </div>

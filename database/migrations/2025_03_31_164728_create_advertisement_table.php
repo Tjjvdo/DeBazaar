@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->double('price');
             $table->string('information');
             $table->integer('advertiser_id');
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->default(now());
             $table->timestamp('inactive_at')->nullable();
 
             $table->foreign('advertiser_id')->references('id')->on('users')->onDelete('cascade');

@@ -18,20 +18,16 @@ class AdvertisementController extends Controller
 
     public function addAdvertisement(Request $request)
     {
-        $title = $request->input("title");
-        $price = $request->input("price");
-        $information = $request->input("information");
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'price' => 'required|numeric',
+            'information' => 'required',
+        ]);
+        
+        $validatedData['advertiser_id'] = Auth::user()->id;
+        $validatedData['inactive_at'] = now()->addUTCWeeks(2);
 
-        Advertisement::create(
-            [
-                "title" => $title,
-                "price" => $price,
-                "information" => $information,
-                "created_at" => now(),
-                "advertiser_id" => Auth::user()->id,
-                "inactive_at" => now()->addUTCWeeks(2),
-            ]
-        );
+        Advertisement::create($validatedData);
 
         return Redirect::route('getMyAdvertisements');
     }
