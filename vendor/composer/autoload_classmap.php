@@ -22,6 +22,7 @@ return array(
     'App\\Http\\Middleware\\CheckContractStatus' => $baseDir . '/app/Http/Middleware/CheckContractStatus.php',
     'App\\Http\\Middleware\\CheckUserType' => $baseDir . '/app/Http/Middleware/CheckUserType.php',
     'App\\Http\\Middleware\\CheckUserTypes' => $baseDir . '/app/Http/Middleware/CheckUserTypes.php',
+    'App\\Http\\Middleware\\SetLocale' => $baseDir . '/app/Http/Middleware/SetLocale.php',
     'App\\Http\\Requests\\Auth\\LoginRequest' => $baseDir . '/app/Http/Requests/Auth/LoginRequest.php',
     'App\\Http\\Requests\\ProfileUpdateRequest' => $baseDir . '/app/Http/Requests/ProfileUpdateRequest.php',
     'App\\Models\\Advertisement' => $baseDir . '/app/Models/Advertisement.php',

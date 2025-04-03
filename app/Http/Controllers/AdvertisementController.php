@@ -39,7 +39,7 @@ class AdvertisementController extends Controller
     public function getAdvertisements()
     {
         $advertisements = Advertisement::where('inactive_at', '>', now())->orWhere('inactive_at', null)->get();
-        return view("advertisementList", ["advertisements" => $advertisements, "title" => "Advertenties"]);
+        return view("advertisementList", ["advertisements" => $advertisements, "title" => "Advertisements"]);
     }
 
     public function getSingleProduct($id)
@@ -53,7 +53,7 @@ class AdvertisementController extends Controller
     {
         $advertisements = Advertisement::where("advertiser_id", Auth::user()->id)->where('inactive_at', '>', now())->orWhere('inactive_at', null)->get();
 
-        return view("advertisementList", ["advertisements" => $advertisements, "title" => "Mijn advertenties"]);
+        return view("advertisementList", ["advertisements" => $advertisements, "title" => "My advertisements"]);
     }
 
     public function getUpdateSingleProduct($id)

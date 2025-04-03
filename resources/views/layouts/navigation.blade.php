@@ -13,7 +13,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('messages.dashboard') }}
                     </x-nav-link>
 
                     @auth
@@ -24,7 +24,7 @@
 
                         @if ($user->user_type >= 0)
                             <x-nav-link href="{{ route('advertisements') }}" :active="request()->routeIs('advertisements')">
-                                {{ __('Shop') }}
+                                {{ __('messages.shop') }}
                             </x-nav-link>
                         @endif
 
@@ -32,34 +32,44 @@
                             @if($user->user_type == 2 && isset($contract))
                                 @if($contract->status === 'pending')
                                     <x-nav-link :href="route('contracts.advertiser')" :active="request()->routeIs('contracts.advertiser')">
-                                        {{ __('Pending Contract') }}
+                                        {{ __('messages.pending_contract') }}
                                     </x-nav-link>
                                 @endif
                                 @if($contract->status === 'accepted')
                                     <x-nav-link href="{{ route('getMyAdvertisements') }}" :active="request()->routeIs('getMyAdvertisements')">
-                                        {{ __('Mijn advertenties') }}
+                                        {{ __('messages.my_ads') }}
                                     </x-nav-link>
                                     <x-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
-                                        {{ __('Nieuwe advertentie maken') }}
+                                        {{ __('messages.new_ad') }}
                                     </x-nav-link>
                                 @endif
                             @else
                                 <x-nav-link href="{{ route('getMyAdvertisements') }}" :active="request()->routeIs('getMyAdvertisements')">
-                                    {{ __('Mijn advertenties') }}
+                                    {{ __('messages.my_ads') }}
                                 </x-nav-link>
                                 <x-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
-                                    {{ __('Nieuwe advertentie maken') }}
+                                    {{ __('messages.new_ad') }}
                                 </x-nav-link>
                             @endif
                         @endif
 
                         @if ($user->user_type == 3)
                             <x-nav-link :href="route('business-contracts')" :active="request()->routeIs('business-contracts')">
-                                {{ __('Business contracts') }}
+                                {{ __('messages.business_contracts') }}
                             </x-nav-link>
                         @endif
                     @endauth
                 </div>
+            </div>
+
+            <div class="flex space-x-4 ml-auto items-center">
+                <form action="{{ route('switch-language', 'en') }}" method="GET">
+                    <button type="submit" class="text-gray-800 dark:text-gray-300 {{ session('locale') == 'en' ? 'font-bold' : '' }}">🇬🇧 English</button>
+                </form>
+                
+                <form action="{{ route('switch-language', 'nl') }}" method="GET">
+                    <button type="submit" class="text-gray-800 dark:text-gray-300 {{ session('locale') == 'nl' ? 'font-bold' : '' }}">🇳🇱 Nederlands</button>
+                </form>
             </div>
 
             <!-- Settings Dropdown -->
@@ -79,7 +89,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('messages.profile') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -89,7 +99,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('messages.log_out') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -112,7 +122,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('messages.dashboard') }}
             </x-responsive-nav-link>
 
             @auth
@@ -123,7 +133,7 @@
 
                 @if ($user->user_type >= 0)
                     <x-responsive-nav-link href="{{ route('advertisements') }}" :active="request()->routeIs('advertisements')">
-                        {{ __('Shop') }}
+                        {{ __('messages.shop') }}
                     </x-responsive-nav-link>
                 @endif
 
@@ -131,30 +141,30 @@
                     @if($user->user_type == 2 && isset($contract))
                         @if($contract->status === 'pending')
                             <x-responsive-nav-link :href="route('contracts.advertiser')" :active="request()->routeIs('contracts.advertiser')">
-                                {{ __('Pending Contract') }}
+                                {{ __('messages.pending_contract') }}
                             </x-responsive-nav-link>
                         @endif
                         @if($contract->status === 'accepted')
                             <x-responsive-nav-link href="{{ route('getMyAdvertisements') }}" :active="request()->routeIs('getMyAdvertisements')">
-                                {{ __('Mijn advertenties') }}
+                                {{ __('messages.my_ads') }}
                             </x-responsive-nav-link>
                             <x-responsive-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
-                                {{ __('Nieuwe advertentie maken') }}
+                                {{ __('messages.new_ad') }}
                             </x-responsive-nav-link>
                         @endif
                     @else
                         <x-responsive-nav-link href="{{ route('getMyAdvertisements') }}" :active="request()->routeIs('getMyAdvertisements')">
-                            {{ __('Mijn advertenties') }}
+                            {{ __('messages.my_ads') }}
                         </x-responsive-nav-link>
                         <x-responsive-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
-                            {{ __('Nieuwe advertentie maken') }}
+                            {{ __('messages.new_ad') }}
                         </x-responsive-nav-link>
                     @endif
                 @endif
 
                 @if ($user->user_type == 3)
                     <x-responsive-nav-link :href="route('business-contracts')" :active="request()->routeIs('business-contracts')">
-                        {{ __('Business contracts') }}
+                        {{ __('messages.business_contracts') }}
                     </x-responsive-nav-link>
                 @endif
             @endauth
@@ -169,7 +179,7 @@
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('messages.profile') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
@@ -179,7 +189,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('messages.log_out') }}
                     </x-responsive-nav-link>
                 </form>
             </div>

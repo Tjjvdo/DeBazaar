@@ -1,7 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __($title) }}
+            @if ($title === 'Advertisements')
+                {{ __('advertisements.advertisements') }}
+            @elseif ($title === 'My advertisements')
+                {{ __('advertisements.my_advertisements') }}
+            @endif
         </h2>
     </x-slot>
 
@@ -22,10 +26,10 @@
                                     </x-advertisement>
                                     <div class="mt-4 flex space-x-2">
                                         <a href="{{ route('viewAdvertisement', $advertisement->id) }}"
-                                            class="bg-blue-500 hover:bg-blue-700 !important text-white font-bold py-2 px-4 rounded">Bekijken</a>
+                                            class="bg-blue-500 hover:bg-blue-700 !important text-white font-bold py-2 px-4 rounded">{{ __('advertisements.shop') }}</a>
                                         @if (Auth::user()->id == $advertisement->advertiser_id)
                                             <a href="{{ route('getUpdateAdvertisement', $advertisement->id) }}"
-                                                class="bg-green-500 hover:bg-green-700 !important text-white font-bold py-2 px-4 rounded">Update</a>
+                                                class="bg-green-500 hover:bg-green-700 !important text-white font-bold py-2 px-4 rounded">{{ __('advertisements.update') }}</a>
                                         @endif
                                     </div>
                                 </div>
@@ -33,7 +37,7 @@
                         </div>
                     @else
                         <p class="text-center text-gray-600 dark:text-gray-400">
-                            Geen advertenties gevonden.
+                            {{ __('advertisements.no_advertisements') }}
                         </p>
                     @endif
                 </div>
