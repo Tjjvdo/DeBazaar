@@ -8,9 +8,8 @@
     <div class="py-12">
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg relative"> {{-- 'relative' hierheen verplaatst --}}
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg relative">
 
-                    {{-- QR Code rechtsboven --}}
                     <div class="absolute top-4 right-4">
                         {!! QrCode::size(175)->generate(Request::url()) !!}
                     </div>
