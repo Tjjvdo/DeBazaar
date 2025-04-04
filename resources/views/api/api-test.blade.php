@@ -9,10 +9,13 @@
     </div>
 
     <script>
-        fetch('http://debazaar.test/api/active-ads/test', {
+        const companyName = "{{ $company_name }}";
+        const apiKey = "{{ $api_key }}";
+
+        fetch(`http://debazaar.test/api/active-ads/${companyName}`, {
             method: 'GET',
             headers: {
-                'X-API-KEY': 'tfUVGtd1OcWTV6HcqwUGHp3ziIBnf3Sl'
+                'X-API-KEY': apiKey
             }
         })
         .then(response => response.json())

@@ -46,8 +46,8 @@ Route::middleware([SetLocale::class])->group(function () {
     });
 });
 
-Route::get('/api-test', function () {
-    return view('api.api-test');
+Route::get('/api-test/{company_name}/{api_key}', function ($company_name, $api_key) {
+    return view('api.api-test', compact('company_name', 'api_key'));
 })->name('api-test');
 
 Route::get('switch-language/{language}', function ($language) {
