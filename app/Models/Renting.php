@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Renting extends Model{
     use HasFactory;
 
-    protected $table = "advertisement";
+    protected $table = "renting";
     protected $guarded = [];
+
+    public $timestamps = false;
 
     public function bidder()
     {

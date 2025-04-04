@@ -35,7 +35,8 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::get('/advertisements', [AdvertisementController::class, 'getAdvertisements'])->name('advertisements');
         Route::get('/advertisements/{id}/View', [AdvertisementController::class, 'getSingleProduct'])->name('viewAdvertisement');
-        Route::post('/advertisements/{id}/View', [AdvertisementController::class, 'bidOnProduct'])->name('bidOnProduct');
+        Route::post('/advertisements/{id}/View/bid', [AdvertisementController::class, 'bidOnProduct'])->name('bidOnProduct');
+        Route::post('/advertisements/{id}/View/rent', [AdvertisementController::class, 'rentProduct'])->name('rentProduct');
     });
     
     Route::middleware(['auth', 'checkUserTypes:1,2', 'checkContractStatus:accepted'])->group(function () {

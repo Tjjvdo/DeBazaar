@@ -13,9 +13,11 @@ class AdvertisementController extends Controller
 {
     public function newAdvertisement()
     {
-        $amountOfAdvertisements = Advertisement::where('advertiser_id', Auth::user()->id)->where('inactive_at', '>', now())->orWhere('inactive_at', null)->count();
+        $amountOfBidAdvertisements = $this->getAmountOfBidAdvertisements();
 
-        return view('newAdvertisement', ['amountOfAdvertisements' => $amountOfAdvertisements]);
+        $amountOfRentAdvertisements = $this->getAmountOfRentAdvertisements();
+
+        return view('newAdvertisement', ['amountOfBidAdvertisements' => $amountOfBidAdvertisements, 'amountOfRentAdvertisements' => $amountOfRentAdvertisements]);
     }
 
     public function addAdvertisement(Request $request)
@@ -27,8 +29,14 @@ class AdvertisementController extends Controller
 
         if ($isRentable) {
             $isRentable = true;
+            if ($this->getAmountOfRentAdvertisements() > 3) {
+                return Redirect::route('getMyAdvertisements');
+            }
         } else {
             $isRentable = false;
+            if ($this->getAmountOfBidAdvertisements() > 3) {
+                return Redirect::route('getMyAdvertisements');
+            }
         }
 
         $advertisement = Advertisement::create(
@@ -55,7 +63,7 @@ class AdvertisementController extends Controller
 
     public function getAdvertisements()
     {
-        $advertisements = Advertisement::where('inactive_at', '>', now())->orWhere('inactive_at', null)->get();
+        $advertisements = Advertisement::where('inactive_at', '>', now())->get();
 
         return view("advertisementList", ["advertisements" => $advertisements, "title" => "Advertisements"]);
     }
@@ -66,18 +74,22 @@ class AdvertisementController extends Controller
 
         if ($advertisement->is_rentable) {
             $renting = Renting::where('advertisement_id', $id)->first();
+            $today = date('Y-m-d');
+            $maxDate = date('Y-m-d', strtotime('+1 year'));
             $bidding = null;
         } else {
             $bidding = Bid::where('advertisement_id', $id)->first();
             $renting = null;
+            $today = null;
+            $maxDate = null;
         }
 
-        return view("viewProduct", ["advertisement" => $advertisement, "renting" => $renting, "bidding" => $bidding, 'amountOfBids' => $this->getAmountOfBids()]);
+        return view("viewProduct", ["advertisement" => $advertisement, "renting" => $renting, "today" => $today, "maxDate" => $maxDate, "bidding" => $bidding, 'amountOfBids' => $this->getAmountOfBids()]);
     }
 
     public function getMyAdvertisements()
     {
-        $advertisements = Advertisement::where("advertiser_id", Auth::user()->id)->where('inactive_at', '>', now())->orWhere('inactive_at', null)->get();
+        $advertisements = Advertisement::where("advertiser_id", Auth::user()->id)->where('inactive_at', '>', now())->get();
 
         return view("advertisementList", ["advertisements" => $advertisements, "title" => "My advertisements"]);
     }
@@ -110,7 +122,7 @@ class AdvertisementController extends Controller
         $bidAmount = $request->input("bid");
 
         if ($this->getAmountOfBids() < 4) {
-            $bid = Bid::where('advertisement_id', $id)->where('inactive_at', '>', now())->orWhere('inactive_at', null)->first();
+            $bid = Advertisement::where('advertisement_id', $id)->where('inactive_at', '>', now())->first();
 
             if (!$bid) {
                 Bid::where('advertisement_id', $id)->update(
@@ -127,15 +139,39 @@ class AdvertisementController extends Controller
 
     public function getAmountOfBids()
     {
-        $activeAdvertisements = Advertisement::where(function ($query) {
-            $query->where('inactive_at', '>', now())
-                ->orWhere('inactive_at', null);
-        })->pluck('id');
+        $activeBidAdvertisements = Advertisement::where('inactive_at', '>', now())->where('is_rentable', 0)->pluck('id');
 
         $amountOfBiddings = Bid::where('bidder_id', Auth::user()->id)
-            ->whereIn('advertisement_id', $activeAdvertisements)
+            ->whereIn('advertisement_id', $activeBidAdvertisements)
             ->count();
 
         return $amountOfBiddings;
+    }
+
+    public function getAmountOfBidAdvertisements(){
+        return Advertisement::where('advertiser_id', Auth::user()->id)->where('inactive_at', '>', now())->where('is_rentable', 0)->count();
+    }
+    
+    public function getAmountOfRentAdvertisements(){
+        return Advertisement::where('advertiser_id', Auth::user()->id)->where('inactive_at', '>', now())->where('is_rentable', 1)->count();
+    }
+
+    public function rentProduct($id, Request $request)
+    {
+        $validatedData = $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+        ]);
+
+        $extraData = [
+            'advertisement_id' => $id,
+            'renter_id' => Auth::user()->id,
+        ];
+
+        $validatedData = array_merge($validatedData, $extraData);
+
+        Renting::create($validatedData);
+
+        return Redirect::route('viewAdvertisement', $id);
     }
 }
