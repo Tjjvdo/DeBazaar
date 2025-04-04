@@ -36,12 +36,12 @@ return new class extends Migration {
         Schema::create('renting', function (Blueprint $table) {
             $table->id();
             $table->integer('advertisement_id');
-            $table->integer('bidder_id');
+            $table->integer('renter_id');
             $table->date('start_date');
             $table->date('end_date');
             
             $table->foreign('advertisement_id')->references('id')->on('advertisement')->onDelete('cascade');
-            $table->foreign('bidder_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('renter_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('advertisement_related', function (Blueprint $table) {

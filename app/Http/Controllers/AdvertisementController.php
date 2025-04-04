@@ -72,7 +72,7 @@ class AdvertisementController extends Controller
             $renting = null;
         }
 
-        return view("viewProduct", ["advertisement" => $advertisement, "renting" => $renting, "bidding" => $bidding]);
+        return view("viewProduct", ["advertisement" => $advertisement, "renting" => $renting, "bidding" => $bidding, 'amountOfBids' => $this->getAmountOfBids()]);
     }
 
     public function getMyAdvertisements()
@@ -109,13 +109,33 @@ class AdvertisementController extends Controller
     {
         $bidAmount = $request->input("bid");
 
-        Bid::where('advertisement_id', $id)->update(
-            [
-                "bidder_id" => Auth::user()->id,
-                "bid_amount" => $bidAmount,
-            ]
-        );
+        if ($this->getAmountOfBids() < 4) {
+            $bid = Bid::where('advertisement_id', $id)->where('inactive_at', '>', now())->orWhere('inactive_at', null)->first();
+
+            if (!$bid) {
+                Bid::where('advertisement_id', $id)->update(
+                    [
+                        "bidder_id" => Auth::user()->id,
+                        "bid_amount" => $bidAmount,
+                    ]
+                );
+            }
+        }
 
         return Redirect::route('viewAdvertisement', $id);
+    }
+
+    public function getAmountOfBids()
+    {
+        $activeAdvertisements = Advertisement::where(function ($query) {
+            $query->where('inactive_at', '>', now())
+                ->orWhere('inactive_at', null);
+        })->pluck('id');
+
+        $amountOfBiddings = Bid::where('bidder_id', Auth::user()->id)
+            ->whereIn('advertisement_id', $activeAdvertisements)
+            ->count();
+
+        return $amountOfBiddings;
     }
 }
