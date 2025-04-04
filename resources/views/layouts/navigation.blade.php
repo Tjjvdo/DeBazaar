@@ -27,7 +27,7 @@
                                 {{ __('messages.shop') }}
                             </x-nav-link>
                             <x-nav-link href="{{ route('rentCalendar') }}" :active="request()->routeIs('rentCalendar')">
-                                {{ __('messages.renting_schedule') }}
+                                {{ __('messages.customer_schedule') }}
                             </x-nav-link>
                         @endif
 

@@ -14,4 +14,5 @@ return [
     'register' => 'Register',
     'renting_schedule' => 'Renting out schedule',
     'language' => 'en',
+    'customer_schedule' => 'Renting schedule'
 ];
