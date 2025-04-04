@@ -179,7 +179,7 @@ class AdvertisementController extends Controller
 
     public function rentalCalendar()
     {
-        $advertisements = Advertisement::where('advertiser_id', Auth::user()->id)->where('is_rentable', 1)->with('rentings')->get();
+        $advertisements = Advertisement::where('advertiser_id', Auth::user()->id)->with('rentings')->get();
 
         $rentalEvents = [];
 
@@ -187,12 +187,25 @@ class AdvertisementController extends Controller
             foreach ($advertisement->rentings as $renting) {
                 $endDate = new \DateTime($renting->end_date->format('Y-m-d'));
                 $endDate->add(new \DateInterval('P1D'));
-
+    
                 $rentalEvents[] = [
                     'title' => $advertisement->title,
                     'start' => $renting->start_date->format('Y-m-d'),
                     'end' => $endDate->format('Y-m-d'),
                     'url' => route('viewAdvertisement', $advertisement->id),
+                ];
+            }
+    
+            if ($advertisement->inactive_at) {
+                $rentalEvents[] = [
+                    'title' => __('advertisements.advertisement_ending'). ' ' . $advertisement->title,
+                    'start' => $advertisement->inactive_at->format('Y-m-d'),
+                    'end' => $advertisement->inactive_at->format('Y-m-d'),
+                    'url' => route('viewAdvertisement', $advertisement->id),
+                    'allDay' => true,
+                    'backgroundColor' => 'lightgray',
+                    'borderColor' => 'gray',
+                    'textColor' => 'black',
                 ];
             }
         }
