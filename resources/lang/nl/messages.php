@@ -12,4 +12,5 @@ return [
     'log_in' => 'Inloggen',
     'log_out' => 'Uitloggen',
     'register' => 'Registreren',
+    'my_landingpage' => 'Mijn Landingspagina',
 ];

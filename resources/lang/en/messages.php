@@ -12,4 +12,5 @@ return [
     'log_in' => 'Log In',
     'log_out' => 'Log Out',
     'register' => 'Register',
+    'my_landingpage' => 'My Landingpage'
 ];

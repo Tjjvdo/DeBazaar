@@ -42,6 +42,9 @@
                                     <x-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
                                         {{ __('messages.new_ad') }}
                                     </x-nav-link>
+                                    <x-nav-link href="{{ route('my-landingpage') }}" :active="request()->routeIs('my-landingpage')">
+                                        {{ __('messages.my_landingpage') }}
+                                    </x-nav-link>
                                 @endif
                             @else
                                 <x-nav-link href="{{ route('getMyAdvertisements') }}" :active="request()->routeIs('getMyAdvertisements')">
@@ -150,6 +153,9 @@
                             </x-responsive-nav-link>
                             <x-responsive-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
                                 {{ __('messages.new_ad') }}
+                            </x-responsive-nav-link>
+                            <x-responsive-nav-link href="{{ route('my-landingpage') }}" :active="request()->routeIs('my-landingpage')">
+                                {{ __('messages.my_landingpage') }}
                             </x-responsive-nav-link>
                         @endif
                     @else

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\LandingPageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SetLocale;
 
@@ -27,6 +28,10 @@ Route::middleware([SetLocale::class])->group(function () {
     Route::middleware(['auth', 'checkUserType:2', 'checkContractStatus:pending'])->group(function () {
         Route::get('/my-contract', [ContractController::class, 'showAdvertiserContract'])->name('contracts.advertiser');
         Route::post('/my-contract/respond', [ContractController::class, 'respondToContract'])->name('contracts.respond');
+    });
+
+    Route::middleware(['auth', 'checkUserType:2', 'checkContractStatus:accepted'])->group(function () {
+        Route::get('/my-landingpage', [LandingPageController::class, 'myLandingpage'])->name('my-landingpage');
     });
 
     Route::middleware('auth')->group(function () {
