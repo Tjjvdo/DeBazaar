@@ -22,13 +22,23 @@
                     @if ($advertisement->is_rentable)
                     <form action="{{ route('rentProduct', $advertisement->id) }}" method="POST" class="space-y-6">
                         @csrf
-                        <label for="start_date">{{ __('advertisements.begin_date') }}</label>
-                        <input type="date" id="start_date" min="{{$today}}" max="{{$maxDate}}" name="start_date">
+                        <div>
+                <label for="start_date" class="block text-lg font-medium text-gray-700 dark:text-gray-300">{{ __('advertisements.begin_date') }}</label>
+                <div class="mt-2">
+                    <input type="date" id="start_date" min="{{$today}}" max="{{$maxDate}}" name="start_date"
+                           class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-lg border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 p-2">
+                </div>
+            </div>
 
-                        <label for="end_date">{{ __('advertisements.end_date') }}</label>
-                        <input type="date" id="end_date" min="{{$tomorrow}}" max="{{$maxDate}}" name="end_date">
+            <div>
+                <label for="end_date" class="block text-lg font-medium text-gray-700 dark:text-gray-300">{{ __('advertisements.end_date') }}</label>
+                <div class="mt-2">
+                    <input type="date" id="end_date" min="{{$tomorrow}}" max="{{$maxDate}}" name="end_date"
+                           class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-lg border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 p-2">
+                </div>
+            </div>
 
-                        <button type="submit">{{ __('advertisements.rent') }}</button>
+            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">{{ __('advertisements.rent') }}</button>
                     </form>
                     @else
                     @if ($bidding->bidder_id)

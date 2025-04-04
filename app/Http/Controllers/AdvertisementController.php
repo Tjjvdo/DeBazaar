@@ -174,7 +174,7 @@ class AdvertisementController extends Controller
 
         Renting::create($validatedData);
 
-        return Redirect::route('viewAdvertisement', $id);
+        return Redirect::route('rentCalendar');
     }
 
     public function rentalCalendar()
