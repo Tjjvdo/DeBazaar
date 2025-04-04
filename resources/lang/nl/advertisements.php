@@ -31,4 +31,5 @@ return [
     'rent' => 'Verhuren',
     'only_rent' => 'Alleen verhuren',
     'only_bid' => 'Alleen bieden',
+    'schedule' => 'Kalender',
 ];

@@ -26,7 +26,7 @@
                         <input type="date" id="start_date" min="{{$today}}" max="{{$maxDate}}" name="start_date">
 
                         <label for="end_date">{{ __('advertisements.end_date') }}</label>
-                        <input type="date" id="end_date" min="{{$today}}" max="{{$maxDate}}" name="end_date">
+                        <input type="date" id="end_date" min="{{$tomorrow}}" max="{{$maxDate}}" name="end_date">
 
                         <button type="submit">{{ __('advertisements.rent') }}</button>
                     </form>

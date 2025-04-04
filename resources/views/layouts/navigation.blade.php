@@ -26,6 +26,9 @@
                             <x-nav-link href="{{ route('advertisements') }}" :active="request()->routeIs('advertisements')">
                                 {{ __('messages.shop') }}
                             </x-nav-link>
+                            <x-nav-link href="{{ route('rentCalendar') }}" :active="request()->routeIs('rentCalendar')">
+                                {{ __('messages.renting_schedule') }}
+                            </x-nav-link>
                         @endif
 
                         @if ($user->user_type == 1 || $user->user_type == 2)
@@ -46,6 +49,9 @@
                             @else
                                 <x-nav-link href="{{ route('getMyAdvertisements') }}" :active="request()->routeIs('getMyAdvertisements')">
                                     {{ __('messages.my_ads') }}
+                                </x-nav-link>
+                                <x-nav-link href="{{ route('rentalCalendar') }}" :active="request()->routeIs('rentalCalendar')">
+                                    {{ __('messages.renting_schedule') }}
                                 </x-nav-link>
                                 <x-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
                                     {{ __('messages.new_ad') }}

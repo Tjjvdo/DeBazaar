@@ -12,4 +12,6 @@ return [
     'log_in' => 'Inloggen',
     'log_out' => 'Uitloggen',
     'register' => 'Registreren',
+    'renting_schedule' => 'Verhuur overzicht',
+    'language' => 'nl'
 ];
