@@ -46,6 +46,9 @@ Route::middleware([SetLocale::class])->group(function () {
     });
 });
 
+Route::get('/api-test', function () {
+    return view('api.api-test');
+})->name('api-test');
 
 Route::get('switch-language/{language}', function ($language) {
     $availableLanguages = ['en', 'nl'];
