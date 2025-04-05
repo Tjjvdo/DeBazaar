@@ -37,6 +37,7 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::get('/advertisements/{id}/View', [AdvertisementController::class, 'getSingleProduct'])->name('viewAdvertisement');
         Route::post('/advertisements/{id}/View/bid', [AdvertisementController::class, 'bidOnProduct'])->name('bidOnProduct');
         Route::post('/advertisements/{id}/View/rent', [AdvertisementController::class, 'rentProduct'])->name('rentProduct');
+        Route::get('/rentSchedule', [AdvertisementController::class, 'rentCalendar'])->name('rentCalendar');
     });
     
     Route::middleware(['auth', 'checkUserTypes:1,2', 'checkContractStatus:accepted'])->group(function () {
@@ -45,6 +46,7 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::get('/myAdvertisements', [AdvertisementController::class, 'getMyAdvertisements'])->name('getMyAdvertisements');
         Route::get('/advertisements/{id}/Update', [AdvertisementController::class, 'getUpdateSingleProduct'])->name('getUpdateAdvertisement');
         Route::post('/advertisements/{id}/Update', [AdvertisementController::class, 'postUpdateSingleProduct'])->name('postUpdateAdvertisement');
+        Route::get('/rentOutSchedule', [AdvertisementController::class, 'rentalCalendar'])->name('rentalCalendar');
     });
 });
 

@@ -12,4 +12,7 @@ return [
     'log_in' => 'Log In',
     'log_out' => 'Log Out',
     'register' => 'Register',
+    'renting_schedule' => 'Renting out schedule',
+    'language' => 'en',
+    'customer_schedule' => 'Renting schedule'
 ];

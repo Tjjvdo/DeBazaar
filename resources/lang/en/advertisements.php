@@ -31,4 +31,6 @@ return [
     'rent' => 'Rent',
     'only_rent' => 'Only rent',
     'only_bid' => 'Only bid',
+    'schedule' => 'Schedule',
+    'advertisement_ending' => 'Ending ad:',
 ];

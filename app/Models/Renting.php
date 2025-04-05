@@ -13,7 +13,17 @@ class Renting extends Model{
 
     public $timestamps = false;
 
-    public function bidder()
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+    ];
+
+    public function advertisement()
+    {
+        return $this->belongsTo(Advertisement::class);
+    }
+
+    public function renter()
     {
         return $this->belongsTo(User::class, 'renter_id');
     }

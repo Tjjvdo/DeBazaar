@@ -73,18 +73,18 @@ class AdvertisementController extends Controller
         $advertisement = Advertisement::where("id", $id)->first();
 
         if ($advertisement->is_rentable) {
-            $renting = Renting::where('advertisement_id', $id)->first();
             $today = date('Y-m-d');
-            $maxDate = date('Y-m-d', strtotime('+1 year'));
+            $tomorrow = date('Y-m-d', strtotime('+1 day'));
+            $maxDate = $advertisement->inactive_at->format('Y-m-d');
             $bidding = null;
         } else {
             $bidding = Bid::where('advertisement_id', $id)->first();
-            $renting = null;
             $today = null;
+            $tomorrow = null;
             $maxDate = null;
         }
 
-        return view("viewProduct", ["advertisement" => $advertisement, "renting" => $renting, "today" => $today, "maxDate" => $maxDate, "bidding" => $bidding, 'amountOfBids' => $this->getAmountOfBids()]);
+        return view("viewProduct", ["advertisement" => $advertisement, "today" => $today, "tomorrow" => $tomorrow, "maxDate" => $maxDate, "bidding" => $bidding, 'amountOfBids' => $this->getAmountOfBids()]);
     }
 
     public function getMyAdvertisements()
@@ -148,11 +148,13 @@ class AdvertisementController extends Controller
         return $amountOfBiddings;
     }
 
-    public function getAmountOfBidAdvertisements(){
+    public function getAmountOfBidAdvertisements()
+    {
         return Advertisement::where('advertiser_id', Auth::user()->id)->where('inactive_at', '>', now())->where('is_rentable', 0)->count();
     }
-    
-    public function getAmountOfRentAdvertisements(){
+
+    public function getAmountOfRentAdvertisements()
+    {
         return Advertisement::where('advertiser_id', Auth::user()->id)->where('inactive_at', '>', now())->where('is_rentable', 1)->count();
     }
 
@@ -172,6 +174,63 @@ class AdvertisementController extends Controller
 
         Renting::create($validatedData);
 
-        return Redirect::route('viewAdvertisement', $id);
+        return Redirect::route('rentCalendar');
+    }
+
+    public function rentalCalendar()
+    {
+        $advertisements = Advertisement::where('advertiser_id', Auth::user()->id)->with('rentings')->get();
+
+        $rentalEvents = [];
+
+        foreach ($advertisements as $advertisement) {
+            foreach ($advertisement->rentings as $renting) {
+                $endDate = new \DateTime($renting->end_date->format('Y-m-d'));
+                $endDate->add(new \DateInterval('P1D'));
+    
+                $rentalEvents[] = [
+                    'title' => $advertisement->title,
+                    'start' => $renting->start_date->format('Y-m-d'),
+                    'end' => $endDate->format('Y-m-d'),
+                    'url' => route('viewAdvertisement', $advertisement->id),
+                ];
+            }
+    
+            if ($advertisement->inactive_at) {
+                $rentalEvents[] = [
+                    'title' => __('advertisements.advertisement_ending'). ' ' . $advertisement->title,
+                    'start' => $advertisement->inactive_at->format('Y-m-d'),
+                    'end' => $advertisement->inactive_at->format('Y-m-d'),
+                    'url' => route('viewAdvertisement', $advertisement->id),
+                    'allDay' => true,
+                    'backgroundColor' => 'lightgray',
+                    'borderColor' => 'gray',
+                    'textColor' => 'black',
+                ];
+            }
+        }
+
+        return view('rentalCalendar', compact('rentalEvents'));
+    }
+
+    public function rentCalendar()
+    {
+        $rentings = Renting::where('renter_id', Auth::user()->id)->get();
+
+        $rentalEvents = [];
+
+        foreach ($rentings as $renting) {
+            $endDate = new \DateTime($renting->end_date->format('Y-m-d'));
+            $endDate->add(new \DateInterval('P1D'));
+
+            $rentalEvents[] = [
+                'title' => $renting->advertisement->title,
+                'start' => $renting->start_date->format('Y-m-d'),
+                'end' => $endDate->format('Y-m-d'),
+                'url' => route('viewAdvertisement', $renting->advertisement_id),
+            ];
+        }
+
+        return view('rentalCalendar', compact('rentalEvents'));
     }
 }
