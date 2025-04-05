@@ -76,11 +76,11 @@
 
             <div class="flex space-x-4 ml-auto items-center">
                 <form action="{{ route('switch-language', 'en') }}" method="GET">
-                    <button type="submit" class="text-gray-800 dark:text-gray-300 {{ session('locale') == 'en' ? 'font-bold' : '' }}">🇬🇧 English</button>
+                    <button type="submit" class="text-gray-800 dark:text-gray-300 {{ session('locale') == 'en' ? 'font-bold' : '' }}">🇬🇧</button>
                 </form>
                 
                 <form action="{{ route('switch-language', 'nl') }}" method="GET">
-                    <button type="submit" class="text-gray-800 dark:text-gray-300 {{ session('locale') == 'nl' ? 'font-bold' : '' }}">🇳🇱 Nederlands</button>
+                    <button type="submit" class="text-gray-800 dark:text-gray-300 {{ session('locale') == 'nl' ? 'font-bold' : '' }}">🇳🇱</button>
                 </form>
             </div>
 

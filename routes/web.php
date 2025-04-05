@@ -19,6 +19,18 @@ Route::middleware([SetLocale::class])->group(function () {
         return view('dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');
 
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::get('/advertisements', [AdvertisementController::class, 'getAdvertisements'])->name('advertisements');
+        Route::get('/advertisements/{id}/View', [AdvertisementController::class, 'getSingleProduct'])->name('viewAdvertisement');
+        Route::post('/advertisements/{id}/View/bid', [AdvertisementController::class, 'bidOnProduct'])->name('bidOnProduct');
+        Route::post('/advertisements/{id}/View/rent', [AdvertisementController::class, 'rentProduct'])->name('rentProduct');
+        Route::get('/rentSchedule', [AdvertisementController::class, 'rentCalendar'])->name('rentCalendar');
+        Route::get('/landingpage/{slug}', [LandingPageController::class, 'show'])->name('landingpage.show');
+    });
+
     Route::middleware(['auth', 'checkUserType:3'])->group(function () {
         Route::get('/business-contracts', [ContractController::class, 'index'])->name('business-contracts');
         Route::get('/contracts/download/{user_id}', [ContractController::class, 'download'])->name('contracts.download');
@@ -32,17 +44,8 @@ Route::middleware([SetLocale::class])->group(function () {
 
     Route::middleware(['auth', 'checkUserType:2', 'checkContractStatus:accepted'])->group(function () {
         Route::get('/my-landingpage', [LandingPageController::class, 'myLandingpage'])->name('my-landingpage');
-    });
+        Route::post('/landingpage/save', [LandingPageController::class, 'save'])->name('landingpage.save');
 
-    Route::middleware('auth')->group(function () {
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-        Route::get('/advertisements', [AdvertisementController::class, 'getAdvertisements'])->name('advertisements');
-        Route::get('/advertisements/{id}/View', [AdvertisementController::class, 'getSingleProduct'])->name('viewAdvertisement');
-        Route::post('/advertisements/{id}/View/bid', [AdvertisementController::class, 'bidOnProduct'])->name('bidOnProduct');
-        Route::post('/advertisements/{id}/View/rent', [AdvertisementController::class, 'rentProduct'])->name('rentProduct');
-        Route::get('/rentSchedule', [AdvertisementController::class, 'rentCalendar'])->name('rentCalendar');
     });
     
     Route::middleware(['auth', 'checkUserTypes:1,2', 'checkContractStatus:accepted'])->group(function () {
