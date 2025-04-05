@@ -48,6 +48,7 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::post('/advertisements/{id}/Update', [AdvertisementController::class, 'postUpdateSingleProduct'])->name('postUpdateAdvertisement');
         Route::get('/rentOutSchedule', [AdvertisementController::class, 'rentalCalendar'])->name('rentalCalendar');
         Route::post('/advertisements/{id}/UpdateRelations', [AdvertisementController::class, 'addRelationToProduct'])->name('postUpdateAdvertisementRelation');
+        Route::post('/newAdvertisement/uploadCSV', [AdvertisementController::class, 'uploadAdvertisementsCSV'])->name('uploadAdvertisementsCSV');
     });
 });
 

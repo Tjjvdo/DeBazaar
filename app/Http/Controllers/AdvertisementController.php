@@ -6,9 +6,12 @@ use App\Models\Advertisement;
 use App\Models\AdvertisementRelated;
 use App\Models\Bid;
 use App\Models\Renting;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use League\Csv\Reader;
+use League\Csv\Exception as CsvException;
 
 use function Pest\Laravel\get;
 
@@ -64,6 +67,95 @@ class AdvertisementController extends Controller
         }
 
         return Redirect::route('getUpdateAdvertisement', $advertisement->id);
+    }
+
+    public function uploadAdvertisementsCSV(Request $request)
+    {
+        $request->validate([
+            'csv_file' => 'required|mimes:csv,txt',
+        ]);
+
+        if ($request->hasFile('csv_file')) {
+            $file = $request->file('csv_file');
+
+            try {
+                $csv = Reader::createFromPath($file->getPathname(), 'r');
+                $csv->setHeaderOffset(0);
+                $records = $csv->getRecords();
+                $uploadedCount = 0;
+                $errorMessages = [];
+
+                foreach ($records as $record) {
+                    if (!isset($record['title']) || !isset($record['price']) || !isset($record['information']) || !isset($record['is_rentable'])) {
+                        $errorMessages[] = __('messages.csv_invalid_row_structure');
+                        continue;
+                    }
+
+                    $title = trim($record['title']);
+                    $price = filter_var($record['price'], FILTER_VALIDATE_FLOAT);
+                    $information = trim($record['information']);
+                    $isRentable = filter_var($record['is_rentable'], FILTER_VALIDATE_BOOLEAN);
+
+                    $dataToValidate = [
+                        'title' => $title,
+                        'price' => $price,
+                        'information' => $information,
+                    ];
+
+                    $rules = [
+                        'title' => 'required|string|max:255',
+                        'price' => 'required|numeric|min:0.01',
+                        'information' => 'required|string',
+                    ];
+
+                    $rowValidator = Validator::make($dataToValidate, $rules);
+
+                    if ($rowValidator->fails()) {
+                        foreach ($rowValidator->errors()->all() as $error) {
+                            $errorMessages[] = __('messages.csv_validation_error', ['title' => $title, 'error' => $error]);
+                        }
+                        continue;
+                    }
+
+                    $amountOfBidAdvertisements = $this->getAmountOfBidAdvertisements();
+                    $amountOfRentAdvertisements = $this->getAmountOfRentAdvertisements();
+
+                    if (($isRentable && $amountOfRentAdvertisements < 4) || (!$isRentable && $amountOfBidAdvertisements < 4)) {
+                        $inactive_at = $isRentable ? now()->addUTCMonths(2) : now()->addUTCWeek();
+
+                        $advertisement = Advertisement::create([
+                            "title" => $title,
+                            "price" => $price,
+                            "information" => $information,
+                            "created_at" => now(),
+                            "advertiser_id" => Auth::user()->id,
+                            "is_rentable" => $isRentable,
+                            "inactive_at" => $inactive_at,
+                        ]);
+
+                        if (!$isRentable) {
+                            Bid::create([
+                                "advertisement_id" => $advertisement->id,
+                                "bid_amount" => $price,
+                            ]);
+                        }
+                        $uploadedCount++;
+                    } else {
+                        $errorMessages[] = __('messages.max_advertisements_reached_csv', ['title' => $title]);
+                    }
+                }
+
+                if ($uploadedCount == iterator_count($records)) {
+                    return Redirect::route('getMyAdvertisements')->with('success', __('messages.csv_upload_success_all', ['count' => $uploadedCount]));
+                } elseif ($uploadedCount > 0) {
+                    return Redirect::route('getMyAdvertisements')->with('warning', __('messages.csv_upload_partial', ['uploaded' => $uploadedCount, 'total' => iterator_count($records)]))->withErrors($errorMessages);
+                } else {
+                    return Redirect::back()->withErrors($errorMessages);
+                }
+            } catch (CsvException $e) {
+                return Redirect::back()->withErrors(['csv_file' => __('messages.csv_processing_error')]);
+            }
+        }
     }
 
     public function getAdvertisements()
