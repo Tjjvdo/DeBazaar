@@ -1,12 +1,12 @@
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+            <div class="overflow-hidden shadow-sm sm:rounded-lg p-6" style="background-color: {{ $landingPage->color }}">
                 @foreach ($landingPage->component_order as $component)
                     @if ($component === 'information')
                         <div class="mb-6">
-                            <h2 class="text-xl font-bold text-gray-700 dark:text-gray-300">{{ __('landingpage.about_us') }}</h2>
-                            <p class="text-gray-700 dark:text-gray-300">{{ $landingPage->info_content }}</p>
+                            <h2 class="text-xl font-bold text-color-dynamic">{{ __('landingpage.about_us') }}</h2>
+                            <p class="text-color-dynamic">{{ $landingPage->info_content }}</p>
                         </div>
                     @elseif ($component === 'image' && $landingPage->image_path)
                         <div class="mb-6">
@@ -14,8 +14,8 @@
                         </div>
                     @elseif ($component === 'advertisements')
                         <div class="mb-6">
-                            <h2 class="text-xl font-bold mb-4 text-gray-700 dark:text-gray-300">{{ __('landingpage.our_ads') }}</h2>
-                            <div class="p-6 text-gray-900 dark:text-gray-100">
+                            <h2 class="text-xl font-bold mb-4 text-color-dynamic">{{ __('landingpage.our_ads') }}</h2>
+                            <div class="p-6 text-color-dynamic">
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     @foreach ($ads as $advertisement)
                                         <div>
@@ -42,4 +42,27 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const backgroundColor = "{{ $landingPage->color }}";
+    
+            function calculateBrightness(hex) {
+                hex = hex.replace("#", "");
+                let r = parseInt(hex.substring(0, 2), 16);
+                let g = parseInt(hex.substring(2, 4), 16);
+                let b = parseInt(hex.substring(4, 6), 16);
+                return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+            }
+    
+            const brightness = calculateBrightness(backgroundColor);
+    
+            const textColor = brightness < 128 ? 'white' : 'black';
+    
+            document.querySelectorAll('.text-color-dynamic').forEach(function(element) {
+                element.style.color = textColor;
+            });
+        });
+    </script>
+    
 </x-app-layout>

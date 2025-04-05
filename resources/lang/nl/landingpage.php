@@ -4,6 +4,7 @@ return [
     'about_us' => 'Over Ons',
     'our_ads' => 'Onze Advertenties',
     'custom_url' => 'Gepersonaliseerde URL:',
+    'color_picker' => 'Kies een kleur',
     'choose_components' => 'Kies Componenten:',
     'information_block_check' => 'Informatie Blok',
     'image_block_check' => 'Afbeelding Blok',

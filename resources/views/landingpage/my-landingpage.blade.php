@@ -9,6 +9,10 @@
                         <label class="block font-bold mb-2 text-gray-700 dark:text-gray-300">{{ __('landingpage.custom_url') }}</label>
                         <input type="text" name="custom_url" value="{{ old('custom_url', $landingPage->slug ?? '') }}" class="w-full p-2 border rounded">
                     </div>
+                    <div class="mb-4">
+                        <label class="block font-bold mb-2 text-gray-700 dark:text-gray-300">{{ __('landingpage.color_picker') }}</label>
+                        <input type="color" name="color" value="{{ old('color', $landingPage->color ?? '#ff0000') }}" class="p-1 h-10 w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700" >
+                    </div>
                 
                     <div class="mb-4">
                         <label class="block font-bold mb-2 text-gray-700 dark:text-gray-300">{{ __('landingpage.choose_components') }}</label>

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('component_order'); // example order: ["info", "ads", "image"]
             $table->text('info_content')->nullable();
             $table->string('image_path')->nullable();
+            $table->string('color', 7)->default('#ffffff');
             $table->timestamps();
         
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

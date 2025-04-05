@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LandingPage extends Model
 {
     protected $fillable = [
-        'user_id', 'slug', 'component_order', 'info_content', 'image_path',
+        'user_id', 'slug', 'component_order', 'info_content', 'image_path', 'color',
     ];
 
     protected $casts = [

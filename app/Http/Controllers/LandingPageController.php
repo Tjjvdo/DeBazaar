@@ -50,6 +50,7 @@ class LandingPageController extends Controller
             'image' => 'nullable|image|max:2048',
             'component_order' => 'required|array',
             'component_order.*' => 'in:information,image,advertisements',
+            'color' => 'nullable|string|size:7',
         ]);
 
         if (count(array_unique($validated['component_order'])) !== count($validated['component_order'])) {
@@ -81,6 +82,7 @@ class LandingPageController extends Controller
         
         $landingPage->slug = $validated['custom_url'];
         $landingPage->info_content = $validated['information_text'];
+        $landingPage->color = $validated['color'] ?? '#ffffff';
         if ($imagePath) {
             $landingPage->image_path = $imagePath;
         }

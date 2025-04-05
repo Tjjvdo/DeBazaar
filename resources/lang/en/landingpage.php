@@ -4,6 +4,7 @@ return [
     'about_us' => 'About Us',
     'our_ads' => 'Our Ads',
     'custom_url' => 'Custom URL:',
+    'color_picker' => 'Choose a Color:',
     'choose_components' => 'Choose Components:',
     'information_block_check' => 'Information Block',
     'image_block_check' => 'Image Block',
