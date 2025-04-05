@@ -13,4 +13,7 @@ return [
     'log_out' => 'Uitloggen',
     'register' => 'Registreren',
     'my_landingpage' => 'Mijn Landingspagina',
+    'renting_schedule' => 'Verhuur overzicht',
+    'language' => 'nl',
+    'customer_schedule' => 'Huur overzicht',
 ];

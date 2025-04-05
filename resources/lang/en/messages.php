@@ -13,4 +13,7 @@ return [
     'log_out' => 'Log Out',
     'register' => 'Register',
     'my_landingpage' => 'My Landingpage'
+    'renting_schedule' => 'Renting out schedule',
+    'language' => 'en',
+    'customer_schedule' => 'Renting schedule'
 ];

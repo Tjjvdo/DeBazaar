@@ -12,5 +12,16 @@ class Advertisement extends Model
 
     protected $casts = [
         'created_at' => 'datetime',
+        'inactive_at' => 'datetime',
     ];
+
+    public function biddings()
+    {
+        return $this->hasMany(Bid::class);
+    }
+    
+    public function rentings()
+    {
+        return $this->hasMany(Renting::class);
+    }
 }
