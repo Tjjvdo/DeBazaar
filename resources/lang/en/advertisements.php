@@ -33,4 +33,11 @@ return [
     'only_bid' => 'Only bid',
     'schedule' => 'Schedule',
     'advertisement_ending' => 'Ending ad:',
+    'goto' => 'Go to',
+    'related_advertisements' => 'Related advertisements',
+    'relation' => 'Relation with',
+    'add_relation' => 'Add relation',
+    'select_related_advertisement' => 'Select related advertisement',
+    'no_related_advertisements' => 'There are no related advertisements',
+    'no_relation_advertisements' => 'There are no advertisements to make a relation with',
 ];

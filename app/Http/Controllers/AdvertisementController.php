@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
+use App\Models\AdvertisementRelated;
 use App\Models\Bid;
 use App\Models\Renting;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+
+use function Pest\Laravel\get;
 
 class AdvertisementController extends Controller
 {
@@ -32,11 +35,13 @@ class AdvertisementController extends Controller
             if ($this->getAmountOfRentAdvertisements() > 3) {
                 return Redirect::route('getMyAdvertisements');
             }
+            $inactive_at = now()->addUTCMonths(2);
         } else {
             $isRentable = false;
             if ($this->getAmountOfBidAdvertisements() > 3) {
                 return Redirect::route('getMyAdvertisements');
             }
+            $inactive_at = now()->addUTCWeek();
         }
 
         $advertisement = Advertisement::create(
@@ -47,7 +52,7 @@ class AdvertisementController extends Controller
                 "created_at" => now(),
                 "advertiser_id" => Auth::user()->id,
                 "is_rentable" => $isRentable,
-                "inactive_at" => now()->addUTCWeeks(2),
+                "inactive_at" => $inactive_at,
             ]
         );
 
@@ -58,7 +63,7 @@ class AdvertisementController extends Controller
             ]);
         }
 
-        return Redirect::route('getMyAdvertisements');
+        return Redirect::route('getUpdateAdvertisement', $advertisement->id);
     }
 
     public function getAdvertisements()
@@ -66,6 +71,13 @@ class AdvertisementController extends Controller
         $advertisements = Advertisement::where('inactive_at', '>', now())->get();
 
         return view("advertisementList", ["advertisements" => $advertisements, "title" => "Advertisements"]);
+    }
+
+    public function getMyAdvertisements()
+    {
+        $advertisements = Advertisement::where("advertiser_id", Auth::user()->id)->where('inactive_at', '>', now())->get();
+
+        return view("advertisementList", ["advertisements" => $advertisements, "title" => "My advertisements"]);
     }
 
     public function getSingleProduct($id)
@@ -84,21 +96,23 @@ class AdvertisementController extends Controller
             $maxDate = null;
         }
 
-        return view("viewProduct", ["advertisement" => $advertisement, "today" => $today, "tomorrow" => $tomorrow, "maxDate" => $maxDate, "bidding" => $bidding, 'amountOfBids' => $this->getAmountOfBids()]);
-    }
+        $relatedAdvertisements = AdvertisementRelated::where("advertisement_id", $id)->with('relatedAdvertisement')->get();
 
-    public function getMyAdvertisements()
-    {
-        $advertisements = Advertisement::where("advertiser_id", Auth::user()->id)->where('inactive_at', '>', now())->get();
-
-        return view("advertisementList", ["advertisements" => $advertisements, "title" => "My advertisements"]);
+        return view("viewProduct", ["advertisement" => $advertisement, "today" => $today, "tomorrow" => $tomorrow, "maxDate" => $maxDate, "bidding" => $bidding, 'amountOfBids' => $this->getAmountOfBids(), 'relatedAdvertisements' => $relatedAdvertisements]);
     }
 
     public function getUpdateSingleProduct($id)
     {
         $advertisement = Advertisement::where("id", $id)->first();
 
-        return view("updateAdvertisement", ["advertisement" => $advertisement]);
+        $relatedAdvertisements = AdvertisementRelated::where("advertisement_id", $id)->with('relatedAdvertisement')->get();
+
+        $existingRelatedIds = $relatedAdvertisements->pluck('related_advertisement_id')->toArray();
+        $existingRelatedIds[] = $advertisement->id;
+
+        $advertisements = Advertisement::where("advertiser_id", Auth::user()->id)->whereNotIn('id', $existingRelatedIds)->get();
+
+        return view("updateAdvertisement", ["advertisement" => $advertisement, "relatedAdvertisements" => $relatedAdvertisements, "advertisements" => $advertisements]);
     }
 
     public function postUpdateSingleProduct($id, Request $request)
@@ -115,6 +129,22 @@ class AdvertisementController extends Controller
             ]
         );
         return Redirect::route('getMyAdvertisements');
+    }
+
+    public function addRelationToProduct($id, Request $request)
+    {
+        $relationId = $request->input("relationId");
+
+        if ($relationId) {
+            AdvertisementRelated::create(
+                [
+                    'advertisement_id' => $id,
+                    'related_advertisement_id' => $relationId,
+                ]
+            );
+        }
+
+        return Redirect::route('getUpdateAdvertisement', $id);
     }
 
     public function bidOnProduct($id, Request $request)
@@ -187,7 +217,7 @@ class AdvertisementController extends Controller
             foreach ($advertisement->rentings as $renting) {
                 $endDate = new \DateTime($renting->end_date->format('Y-m-d'));
                 $endDate->add(new \DateInterval('P1D'));
-    
+
                 $rentalEvents[] = [
                     'title' => $advertisement->title,
                     'start' => $renting->start_date->format('Y-m-d'),
@@ -195,10 +225,10 @@ class AdvertisementController extends Controller
                     'url' => route('viewAdvertisement', $advertisement->id),
                 ];
             }
-    
+
             if ($advertisement->inactive_at) {
                 $rentalEvents[] = [
-                    'title' => __('advertisements.advertisement_ending'). ' ' . $advertisement->title,
+                    'title' => __('advertisements.advertisement_ending') . ' ' . $advertisement->title,
                     'start' => $advertisement->inactive_at->format('Y-m-d'),
                     'end' => $advertisement->inactive_at->format('Y-m-d'),
                     'url' => route('viewAdvertisement', $advertisement->id),

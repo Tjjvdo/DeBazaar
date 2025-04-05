@@ -47,6 +47,7 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::get('/advertisements/{id}/Update', [AdvertisementController::class, 'getUpdateSingleProduct'])->name('getUpdateAdvertisement');
         Route::post('/advertisements/{id}/Update', [AdvertisementController::class, 'postUpdateSingleProduct'])->name('postUpdateAdvertisement');
         Route::get('/rentOutSchedule', [AdvertisementController::class, 'rentalCalendar'])->name('rentalCalendar');
+        Route::post('/advertisements/{id}/UpdateRelations', [AdvertisementController::class, 'addRelationToProduct'])->name('postUpdateAdvertisementRelation');
     });
 });
 

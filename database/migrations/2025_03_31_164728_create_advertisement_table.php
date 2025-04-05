@@ -40,18 +40,18 @@ return new class extends Migration {
             $table->foreignId('renter_id')->constrained('users')->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date');
-            
+
             // $table->foreign('advertisement_id')->references('id')->on('advertisement')->onDelete('cascade');
             // $table->foreign('renter_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('advertisement_related', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('advertisement_id');
-            $table->unsignedBigInteger('related_advertisement_id');
+            $table->foreignId('advertisement_id')->constrained('advertisement')->onDelete('cascade');
+            $table->foreignId('related_advertisement_id')->constrained('advertisement')->onDelete('cascade');
 
-            $table->foreign('advertisement_id')->references('id')->on('advertisement')->onDelete('cascade');
-            $table->foreign('related_advertisement_id')->references('id')->on('advertisement')->onDelete('cascade');
+            // $table->foreign('advertisement_id')->references('id')->on('advertisement')->onDelete('cascade');
+            // $table->foreign('related_advertisement_id')->references('id')->on('advertisement')->onDelete('cascade');
         });
     }
 

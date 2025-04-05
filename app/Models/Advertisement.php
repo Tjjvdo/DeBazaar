@@ -19,9 +19,14 @@ class Advertisement extends Model
     {
         return $this->hasMany(Bid::class);
     }
-    
+
     public function rentings()
     {
         return $this->hasMany(Renting::class);
+    }
+
+    public function relations()
+    {
+        return $this->hasMany(AdvertisementRelated::class);
     }
 }

@@ -33,4 +33,11 @@ return [
     'only_bid' => 'Alleen bieden',
     'schedule' => 'Kalender',
     'advertisement_ending' => 'Einde avertentie:',
+    'goto' => 'Ga naar',
+    'related_advertisements' => 'Gerelateerde advertenties',
+    'relation' => 'Relatie met',
+    'add_relation' => 'Relatie toevoegen',
+    'select_related_advertisement' => 'Selecteer een geralareede advertentie',
+    'no_related_advertisements' => 'Er zijn geen gerelateerde relaties',
+    'no_relation_advertisements' => 'Er zijn geen advertenties om mee te koppelen'
 ];
