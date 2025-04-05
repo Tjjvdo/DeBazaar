@@ -42,6 +42,9 @@
                                     <x-nav-link href="{{ route('getMyAdvertisements') }}" :active="request()->routeIs('getMyAdvertisements')">
                                         {{ __('messages.my_ads') }}
                                     </x-nav-link>
+                                    <x-nav-link href="{{ route('rentalCalendar') }}" :active="request()->routeIs('rentalCalendar')">
+                                        {{ __('messages.renting_schedule') }}
+                                    </x-nav-link>
                                     <x-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
                                         {{ __('messages.new_ad') }}
                                     </x-nav-link>
