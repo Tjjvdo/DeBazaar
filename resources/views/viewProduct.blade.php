@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Advertentie bekijken') }}
+            {{ __('advertisements.view_advertisement') }}
         </h2>
     </x-slot>
 
@@ -22,6 +22,13 @@
                             <x-slot:created_at>{{ $advertisement->created_at->format('d-m-Y H:i') }}</x-slot:created_at>
                             <x-slot:id>{{ $advertisement->id }}</x-slot:id>
                         </x-advertisement>
+
+                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                            {{ __('advertisements.sold_by') }}:
+                            <a href="{{ route('getAdvertiserReviews', $advertisement->advertiser_id) }}" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+                                {{ $advertisement->advertiser->name }}
+                            </a>
+                        </p>
                     </div>
 
                     <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -143,6 +150,43 @@
                                 <p class="text-gray-500 dark:text-gray-400">{{ __('advertisements.no_related_advertisements') }}</p>
                                 @endif
                             </div>
+
+                            @if ($advertisement->is_rentable)
+                            <div class="mt-8">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">{{ __('advertisements.reviews') }}</h2>
+
+                                <div class="mb-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
+                                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('advertisements.create_review') }}</h3>
+                                    <form action="{{ route('reviewAdvertisement', $advertisement->id) }}" method="post" class="space-y-4">
+                                        @csrf
+                                        <div>
+                                            <label for="review" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('advertisements.create_review') }}</label>
+                                            <textarea id="review" name="review" rows="4" required
+                                                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 p-2"></textarea>
+                                        </div>
+                                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                            {{ __('advertisements.place_review') }}
+                                        </button>
+                                    </form>
+                                </div>
+
+                                @if ($reviews->isNotEmpty())
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('advertisements.existing_reviews') }}</h3>
+                                <ul class="space-y-4">
+                                    @foreach ($reviews as $review)
+                                    <li class="p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
+                                        <div class="flex items-center mb-2">
+                                            <h4 class="text-md font-semibold text-gray-700 dark:text-gray-300">{{ $review->user->name }}</h4>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-400">{{ $review->review }}</p>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                                @else
+                                <p class="text-gray-600 dark:text-gray-400">{{ __('advertisements.no_reviews_yet') }}</p>
+                                @endif
+                            </div>
+                            @endif
                     </div>
                 </div>
             </div>

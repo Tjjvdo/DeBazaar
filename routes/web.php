@@ -46,11 +46,29 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::post('/my-contract/respond', [ContractController::class, 'respondToContract'])->name('contracts.respond');
     });
 
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::get('/advertisements', [AdvertisementController::class, 'getAdvertisements'])->name('advertisements');
+        Route::get('/advertisements/{id}/View', [AdvertisementController::class, 'getSingleProduct'])->name('viewAdvertisement');
+        Route::post('/advertisements/{id}/View/bid', [AdvertisementController::class, 'bidOnProduct'])->name('bidOnProduct');
+        Route::post('/advertisements/{id}/View/rent', [AdvertisementController::class, 'rentProduct'])->name('rentProduct');
+        Route::get('/rentSchedule', [AdvertisementController::class, 'rentCalendar'])->name('rentCalendar');
+        Route::get('/advertisements/purchaseHistory', [AdvertisementController::class, 'getMyPurchases'])->name('myPurchases');
+        Route::get('/advertisements/favorites', [AdvertisementController::class, 'getMyFavorites'])->name('myFavorites');
+        Route::post('/advertisements/{id}/View/favorite', [AdvertisementController::class, 'addMyFavorite'])->name('addMyFavorite');
+        Route::delete('/advertisements/{id}/View/favorite', [AdvertisementController::class, 'removeMyFavorite'])->name('removeMyFavorite');
+        Route::post('/advertisements/{id}/View/review', [AdvertisementController::class, 'reviewAdvertisement'])->name('reviewAdvertisement');
+        Route::get('/advertisers/{id}/reviews', [AdvertisementController::class, 'getAdvertiserReviews'])->name('getAdvertiserReviews');
+        Route::post('/advertisers/{id}/reviews', [AdvertisementController::class, 'postAdvertiserReview'])->name('postAdvertiserReview');
+    });
+    
     Route::middleware(['auth', 'checkUserType:2', 'checkContractStatus:accepted'])->group(function () {
         Route::get('/my-landingpage', [LandingPageController::class, 'myLandingpage'])->name('my-landingpage');
         Route::post('/landingpage/save', [LandingPageController::class, 'save'])->name('landingpage.save');
     });
-    
+
     Route::middleware(['auth', 'checkUserTypes:1,2', 'checkContractStatus:accepted'])->group(function () {
         Route::get('/newAdvertisement', [AdvertisementController::class, 'newAdvertisement'])->name('newAdvertisements');
         Route::post('/newAdvertisement', [AdvertisementController::class, 'addAdvertisement'])->name('addAdvertisements');

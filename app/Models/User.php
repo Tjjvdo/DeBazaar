@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\View\Components\Advertisment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -50,5 +51,10 @@ class User extends Authenticatable
     public function contract()
     {
         return $this->hasOne(Contract::class);
+    }
+
+    public function advertisements()
+    {
+        return $this->hasMany(Advertisement::class, 'advertiser_id');
     }
 }

@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
 use App\Models\AdvertisementRelated;
+use App\Models\AdvertiserReview;
 use App\Models\Bid;
 use App\Models\Favorite;
+use App\Models\ProductReview;
 use App\Models\Renting;
+use App\Models\User;
 use App\View\Components\Advertisment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -25,7 +28,7 @@ class AdvertisementController extends Controller
 
         $amountOfRentAdvertisements = $this->getAmountOfRentAdvertisements();
 
-        return view('newAdvertisement', ['amountOfBidAdvertisements' => $amountOfBidAdvertisements, 'amountOfRentAdvertisements' => $amountOfRentAdvertisements]);
+        return view('newAdvertisement', compact('amountOfBidAdvertisements', 'amountOfRentAdvertisements'));
     }
 
     public function addAdvertisement(Request $request)
@@ -176,27 +179,30 @@ class AdvertisementController extends Controller
 
     public function getSingleProduct($id)
     {
-        $advertisement = Advertisement::where("id", $id)->first();
+        $advertisement = Advertisement::where("id", $id)->with('advertiser')->first();
 
         if ($advertisement->is_rentable) {
             $today = date('Y-m-d');
             $tomorrow = date('Y-m-d', strtotime('+1 day'));
             $maxDate = $advertisement->inactive_at->format('Y-m-d');
             $bidding = null;
+            $reviews = ProductReview::where('advertisement_id', $id)->with('user')->get();
         } else {
             $bidding = Bid::where('advertisement_id', $id)->first();
             $today = null;
             $tomorrow = null;
             $maxDate = null;
+            $reviews = null;
         }
 
         $relatedAdvertisements = AdvertisementRelated::where("advertisement_id", $id)->with('relatedAdvertisement')->get();
 
         $favorited = Favorite::where('advertisement_id', $advertisement->id)->first();
-        
-        $isFavorite = $favorited ? true : false;
 
-        return view("viewProduct", ["advertisement" => $advertisement, "today" => $today, "tomorrow" => $tomorrow, "maxDate" => $maxDate, "bidding" => $bidding, 'amountOfBids' => $this->getAmountOfBids(), 'relatedAdvertisements' => $relatedAdvertisements, "isFavorite" => $isFavorite]);
+        $isFavorite = $favorited ? true : false;
+        $amountOfBids = $this->getAmountOfBids();
+
+        return view("viewProduct", compact('advertisement', 'reviews', 'today', 'tomorrow', 'maxDate', 'bidding', 'amountOfBids', 'relatedAdvertisements', 'isFavorite'));
     }
 
     public function getUpdateSingleProduct($id)
@@ -210,7 +216,7 @@ class AdvertisementController extends Controller
 
         $advertisements = Advertisement::where('advertiser_id', Auth::user()->id)->whereNotIn('id', $existingRelatedIds)->get();
 
-        return view("updateAdvertisement", ["advertisement" => $advertisement, "relatedAdvertisements" => $relatedAdvertisements, "advertisements" => $advertisements]);
+        return view("updateAdvertisement", compact('advertisement', 'relatedAdvertisements', 'advertisements'));
     }
 
     public function postUpdateSingleProduct($id, Request $request)
@@ -396,10 +402,47 @@ class AdvertisementController extends Controller
         return Redirect::route('viewAdvertisement', $id);
     }
 
-    public function removeMyFavorite($id) 
+    public function removeMyFavorite($id)
     {
         Favorite::where('advertisement_id', $id)->where('user_id', Auth::user()->id)->delete();
 
         return Redirect::route('viewAdvertisement', $id);
+    }
+
+    public function reviewAdvertisement($id, Request $request)
+    {
+        ProductReview::create(
+            [
+                'user_id' => Auth::user()->id,
+                'advertisement_id' => $id,
+                'review' => $request->input("review"),
+            ]
+        );
+
+        return Redirect::route('viewAdvertisement', $id);
+    }
+
+    public function getAdvertiserReviews($id)
+    {
+        $advertiser = User::where('id', $id)->first();
+
+        $reviews = AdvertiserReview::where('advertiser_id', $id)->with('advertiser')->get();
+
+        $amountOfAdvertisements = Advertisement::where('advertiser_id', $id)->count();
+
+        return view('advertiserReviews', compact('advertiser', 'reviews', 'amountOfAdvertisements'));
+    }
+
+    public function postAdvertiserReview($id, Request $request)
+    {
+        AdvertiserReview::create(
+            [
+                'reviewer_id' => Auth::user()->id,
+                'advertiser_id' => $id,
+                'review' => $request->input("review"),
+            ]
+        );
+
+        return Redirect::route('getAdvertiserReviews', $id);
     }
 }
