@@ -29,6 +29,10 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::post('/advertisements/{id}/View/rent', [AdvertisementController::class, 'rentProduct'])->name('rentProduct');
         Route::get('/rentSchedule', [AdvertisementController::class, 'rentCalendar'])->name('rentCalendar');
         Route::get('/landingpage/{slug}', [LandingPageController::class, 'show'])->name('landingpage.show');
+        Route::get('/advertisements/purchaseHistory', [AdvertisementController::class, 'getMyPurchases'])->name('myPurchases');
+        Route::get('/advertisements/favorites', [AdvertisementController::class, 'getMyFavorites'])->name('myFavorites');
+        Route::post('/advertisements/{id}/View/favorite', [AdvertisementController::class, 'addMyFavorite'])->name('addMyFavorite');
+        Route::delete('/advertisements/{id}/View/favorite', [AdvertisementController::class, 'removeMyFavorite'])->name('removeMyFavorite');
     });
 
     Route::middleware(['auth', 'checkUserType:3'])->group(function () {
@@ -45,7 +49,6 @@ Route::middleware([SetLocale::class])->group(function () {
     Route::middleware(['auth', 'checkUserType:2', 'checkContractStatus:accepted'])->group(function () {
         Route::get('/my-landingpage', [LandingPageController::class, 'myLandingpage'])->name('my-landingpage');
         Route::post('/landingpage/save', [LandingPageController::class, 'save'])->name('landingpage.save');
-
     });
     
     Route::middleware(['auth', 'checkUserTypes:1,2', 'checkContractStatus:accepted'])->group(function () {
@@ -55,6 +58,8 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::get('/advertisements/{id}/Update', [AdvertisementController::class, 'getUpdateSingleProduct'])->name('getUpdateAdvertisement');
         Route::post('/advertisements/{id}/Update', [AdvertisementController::class, 'postUpdateSingleProduct'])->name('postUpdateAdvertisement');
         Route::get('/rentOutSchedule', [AdvertisementController::class, 'rentalCalendar'])->name('rentalCalendar');
+        Route::post('/advertisements/{id}/UpdateRelations', [AdvertisementController::class, 'addRelationToProduct'])->name('postUpdateAdvertisementRelation');
+        Route::post('/newAdvertisement/uploadCSV', [AdvertisementController::class, 'uploadAdvertisementsCSV'])->name('uploadAdvertisementsCSV');
     });
 });
 

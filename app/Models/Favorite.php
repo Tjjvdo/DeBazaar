@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AdvertisementRelated extends Model
+class Favorite extends Model
 {
-    protected $table = "advertisement_related";
+    protected $table = "favorite";
     protected $guarded = [];
     public $timestamps = false;
 
@@ -15,8 +15,8 @@ class AdvertisementRelated extends Model
         return $this->belongsTo(Advertisement::class);
     }
 
-    public function relatedAdvertisement()
+    public function user()
     {
-        return $this->belongsTo(Advertisement::class, 'related_advertisement_id');
+        return $this->belongsTo(User::class);
     }
 }
