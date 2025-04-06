@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Advertisement;
 use App\Models\AdvertisementRelated;
 use App\Models\Bid;
+use App\Models\Favorite;
 use App\Models\Renting;
+use App\View\Components\Advertisment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -190,19 +192,23 @@ class AdvertisementController extends Controller
 
         $relatedAdvertisements = AdvertisementRelated::where("advertisement_id", $id)->with('relatedAdvertisement')->get();
 
-        return view("viewProduct", ["advertisement" => $advertisement, "today" => $today, "tomorrow" => $tomorrow, "maxDate" => $maxDate, "bidding" => $bidding, 'amountOfBids' => $this->getAmountOfBids(), 'relatedAdvertisements' => $relatedAdvertisements]);
+        $favorited = Favorite::where('advertisement_id', $advertisement->id)->first();
+        
+        $isFavorite = $favorited ? true : false;
+
+        return view("viewProduct", ["advertisement" => $advertisement, "today" => $today, "tomorrow" => $tomorrow, "maxDate" => $maxDate, "bidding" => $bidding, 'amountOfBids' => $this->getAmountOfBids(), 'relatedAdvertisements' => $relatedAdvertisements, "isFavorite" => $isFavorite]);
     }
 
     public function getUpdateSingleProduct($id)
     {
         $advertisement = Advertisement::where("id", $id)->first();
 
-        $relatedAdvertisements = AdvertisementRelated::where("advertisement_id", $id)->with('relatedAdvertisement')->get();
+        $relatedAdvertisements = AdvertisementRelated::where('advertisement_id', $id)->with('relatedAdvertisement')->get();
 
         $existingRelatedIds = $relatedAdvertisements->pluck('related_advertisement_id')->toArray();
         $existingRelatedIds[] = $advertisement->id;
 
-        $advertisements = Advertisement::where("advertiser_id", Auth::user()->id)->whereNotIn('id', $existingRelatedIds)->get();
+        $advertisements = Advertisement::where('advertiser_id', Auth::user()->id)->whereNotIn('id', $existingRelatedIds)->get();
 
         return view("updateAdvertisement", ["advertisement" => $advertisement, "relatedAdvertisements" => $relatedAdvertisements, "advertisements" => $advertisements]);
     }
@@ -354,5 +360,46 @@ class AdvertisementController extends Controller
         }
 
         return view('rentalCalendar', compact('rentalEvents'));
+    }
+
+    public function getMyPurchases()
+    {
+        $biddedAdvertisements = Bid::where('bidder_id', Auth::user()->id)->get();
+
+        $biddedAdvertisementIds = $biddedAdvertisements->pluck('advertisement_id')->toArray();
+
+        $advertisements = Advertisement::where('inactive_at', '<', now())->whereIn('id', $biddedAdvertisementIds)->get();
+
+        return view("advertisementList", ["advertisements" => $advertisements, "title" => "PurchaseHistory"]);
+    }
+
+    public function getMyFavorites()
+    {
+        $favorites = Favorite::where('user_id', Auth::user()->id)->get();
+
+        $advertisementIds = $favorites->pluck('advertisement_id')->toArray();
+
+        $advertisements = Advertisement::whereIn('id', $advertisementIds)->get();
+
+        return view("advertisementList", ["advertisements" => $advertisements, "title" => "Favorites"]);
+    }
+
+    public function addMyFavorite($id)
+    {
+        Favorite::create(
+            [
+                'advertisement_id' => $id,
+                'user_id' => Auth::user()->id,
+            ]
+        );
+
+        return Redirect::route('viewAdvertisement', $id);
+    }
+
+    public function removeMyFavorite($id) 
+    {
+        Favorite::where('advertisement_id', $id)->where('user_id', Auth::user()->id)->delete();
+
+        return Redirect::route('viewAdvertisement', $id);
     }
 }

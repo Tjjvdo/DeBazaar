@@ -44,4 +44,6 @@ return [
     'csv_file_label' => 'CSV-bestand',
     'csv_file_instructions' => 'Selecteer een CSV-bestand met de kolommen: title, price, information, is_rentable (true/false). De eerste rij moet de kolomkoppen bevatten.',
     'upload_button' => 'Upload',
+    'add_to_favorites' => 'Toevoegen aan favorieten',
+    'remove_from_favorites' => 'Verwijder uit favorieten',
 ];

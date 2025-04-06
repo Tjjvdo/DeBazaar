@@ -38,6 +38,11 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::post('/advertisements/{id}/View/bid', [AdvertisementController::class, 'bidOnProduct'])->name('bidOnProduct');
         Route::post('/advertisements/{id}/View/rent', [AdvertisementController::class, 'rentProduct'])->name('rentProduct');
         Route::get('/rentSchedule', [AdvertisementController::class, 'rentCalendar'])->name('rentCalendar');
+        Route::get('/advertisements/purchaseHistory', [AdvertisementController::class, 'getMyPurchases'])->name('myPurchases');
+        Route::get('/advertisements/favorites', [AdvertisementController::class, 'getMyFavorites'])->name('myFavorites');
+        Route::post('/advertisements/{id}/View/favorite', [AdvertisementController::class, 'addMyFavorite'])->name('addMyFavorite');
+        Route::delete('/advertisements/{id}/View/favorite', [AdvertisementController::class, 'removeMyFavorite'])->name('removeMyFavorite');
+
     });
     
     Route::middleware(['auth', 'checkUserTypes:1,2', 'checkContractStatus:accepted'])->group(function () {

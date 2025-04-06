@@ -43,5 +43,7 @@ return [
     'upload_csv_advertisements' => 'Upload advertisement via CSV',
     'csv_file_label' => 'CSV-File',
     'csv_file_instructions' => 'Select a CSV-File with the columns: title, price, information, is_rentable (true/false). The first row should contain the column headers.',
-    'upload_button' => 'Upload'
+    'upload_button' => 'Upload',
+    'add_to_favorites' => 'Add to favorites',
+    'remove_from_favorites' => 'Remove from favorites',
 ];

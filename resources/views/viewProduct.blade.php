@@ -46,6 +46,25 @@
 
                             <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">{{ __('advertisements.rent') }}</button>
                         </form>
+
+                        <div class="mt-4">
+                            @if ($isFavorite)
+                            <form action="{{ route('removeMyFavorite', $advertisement->id) }}" method="post" class="space-y-6">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    {{ __('advertisements.remove_from_favorites') }}
+                                </button>
+                            </form>
+                            @else
+                            <form action="{{ route('addMyFavorite', $advertisement->id) }}" method="post" class="space-y-6">
+                                @csrf
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    {{ __('advertisements.add_to_favorites') }}
+                                </button>
+                            </form>
+                            @endif
+                        </div>
                         @else
                         @if ($bidding->bidder_id)
                         <p class="block text-lg font-medium text-gray-700 dark:text-gray-300">{{ __('advertisements.highest_bidder') }} {{ $bidding->bidder->name }}</p>
@@ -57,15 +76,47 @@
                             <form action="{{ route('bidOnProduct', $advertisement->id) }}" method="post" class="space-y-6">
                             @csrf
                             <div class="mt-4">
+                                @if ($bidding->bidder_id)
                                 <label for="bid" class="block text-lg font-medium text-gray-700 dark:text-gray-300">{{ __('advertisements.your_bid') }} ({{ __('advertisements.minimum') }} €{{ number_format($bidding->bid_amount + 1, 2, ',', '.') }}):</label>
                                 <div class="mt-2">
                                     <input type="number" id="bid" name="bid" min="{{ $bidding->bid_amount + 1 }}" step="0.01"
                                         class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-lg border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 p-2"
                                         placeholder="{{ __('advertisements.enter_your_bid') }}">
                                 </div>
-                                <button class="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">{{ __('advertisements.place_bid') }}</button>
+                                @else
+                                <label for="bid" class="block text-lg font-medium text-gray-700 dark:text-gray-300">{{ __('advertisements.your_bid') }} ({{ __('advertisements.minimum') }} €{{ number_format($bidding->bid_amount, 2, ',', '.') }}):</label>
+                                <div class="mt-2">
+                                    <input type="number" id="bid" name="bid" min="{{ $bidding->bid_amount }}" step="0.01"
+                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-lg border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 p-2"
+                                        placeholder="{{ __('advertisements.enter_your_bid') }}">
+                                </div>
+                                @endif
+                                <div class="mt-4">
+                                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                        {{ __('advertisements.place_bid') }}
+                                    </button>
+                                </div>
                             </div>
                             </form>
+
+                            <div class="mt-4">
+                                @if ($isFavorite)
+                                <form action="{{ route('removeMyFavorite', $advertisement->id) }}" method="post" class="space-y-6">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        {{ __('advertisements.remove_from_favorites') }}
+                                    </button>
+                                </form>
+                                @else
+                                <form action="{{ route('addMyFavorite', $advertisement->id) }}" method="post" class="space-y-6">
+                                    @csrf
+                                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        {{ __('advertisements.add_to_favorites') }}
+                                    </button>
+                                </form>
+                                @endif
+                            </div>
                             @else
                             <br />
                             <p class="block text-lg font-medium text-gray-700 dark:text-gray-300">{{ __('advertisements.max_bids') }}</p>

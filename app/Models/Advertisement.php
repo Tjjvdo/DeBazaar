@@ -29,4 +29,9 @@ class Advertisement extends Model
     {
         return $this->hasMany(AdvertisementRelated::class);
     }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }
