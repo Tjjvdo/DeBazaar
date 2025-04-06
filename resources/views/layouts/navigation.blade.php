@@ -48,6 +48,9 @@
                                     <x-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
                                         {{ __('messages.new_ad') }}
                                     </x-nav-link>
+                                    <x-nav-link href="{{ route('my-landingpage') }}" :active="request()->routeIs('my-landingpage')">
+                                        {{ __('messages.my_landingpage') }}
+                                    </x-nav-link>
                                 @endif
                             @else
                                 <x-nav-link href="{{ route('getMyAdvertisements') }}" :active="request()->routeIs('getMyAdvertisements')">
@@ -73,11 +76,11 @@
 
             <div class="flex space-x-4 ml-auto items-center">
                 <form action="{{ route('switch-language', 'en') }}" method="GET">
-                    <button type="submit" class="text-gray-800 dark:text-gray-300 {{ session('locale') == 'en' ? 'font-bold' : '' }}">🇬🇧 English</button>
+                    <button type="submit" class="text-gray-800 dark:text-gray-300 {{ session('locale') == 'en' ? 'font-bold' : '' }}">🇬🇧</button>
                 </form>
                 
                 <form action="{{ route('switch-language', 'nl') }}" method="GET">
-                    <button type="submit" class="text-gray-800 dark:text-gray-300 {{ session('locale') == 'nl' ? 'font-bold' : '' }}">🇳🇱 Nederlands</button>
+                    <button type="submit" class="text-gray-800 dark:text-gray-300 {{ session('locale') == 'nl' ? 'font-bold' : '' }}">🇳🇱</button>
                 </form>
             </div>
 
@@ -159,6 +162,9 @@
                             </x-responsive-nav-link>
                             <x-responsive-nav-link href="{{ route('newAdvertisements') }}" :active="request()->routeIs('newAdvertisements')">
                                 {{ __('messages.new_ad') }}
+                            </x-responsive-nav-link>
+                            <x-responsive-nav-link href="{{ route('my-landingpage') }}" :active="request()->routeIs('my-landingpage')">
+                                {{ __('messages.my_landingpage') }}
                             </x-responsive-nav-link>
                         @endif
                     @else
