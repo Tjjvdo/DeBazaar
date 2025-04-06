@@ -13,7 +13,7 @@ class LoginPageTest extends DuskTestCase
 
     public function testUserCanLogin()
     {
-        $user = User::factory()->businessAdvertiser()->create();
+        $user = User::factory()->businessAdvertiserAccepted()->create();
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->visit('/login')
@@ -26,7 +26,7 @@ class LoginPageTest extends DuskTestCase
 
     public function testUserCantLoginWithWrongPass()
     {
-        $user = User::factory()->businessAdvertiser()->create();
+        $user = User::factory()->businessAdvertiserAccepted()->create();
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->visit('/login')
