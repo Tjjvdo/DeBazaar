@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'my_landingpage' => 'Mijn Landingspagina',
     'about_us' => 'Over Ons',
     'our_ads' => 'Onze Advertenties',
     'custom_url' => 'Gepersonaliseerde URL:',

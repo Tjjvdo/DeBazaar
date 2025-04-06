@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'my_landingpage' => 'My Landingpage',
     'about_us' => 'About Us',
     'our_ads' => 'Our Ads',
     'custom_url' => 'Custom URL:',
