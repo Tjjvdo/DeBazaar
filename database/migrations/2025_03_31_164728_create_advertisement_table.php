@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->double('price');
-            $table->string('information');
+            $table->mediumText('information');
             $table->integer('advertiser_id');
             $table->boolean('is_rentable')->default(false);
             $table->timestamp('created_at');
@@ -47,10 +47,17 @@ return new class extends Migration {
             $table->foreignId('related_advertisement_id')->constrained('advertisement')->onDelete('cascade');
         });
 
-        Schema::create('favorite', function (Blueprint $table){
+        Schema::create('favorite', function (Blueprint $table) {
             $table->id();
             $table->foreignId('advertisement_id')->constrained('advertisement')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+        });
+
+        Schema::create('product_review', function (Blueprint $table) {
+            $table-> id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('advertisement_id')->constrained('advertisement')->onDelete('cascade');
+            $table->mediumText('review');
         });
     }
 
@@ -60,5 +67,10 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('advertisement');
+        Schema::dropIfExists('bid');
+        Schema::dropIfExists('renting');
+        Schema::dropIfExists('advertisement_related');
+        Schema::dropIfExists('favorite');
+        Schema::dropIfExists('product_review');
     }
 };

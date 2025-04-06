@@ -42,7 +42,7 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::get('/advertisements/favorites', [AdvertisementController::class, 'getMyFavorites'])->name('myFavorites');
         Route::post('/advertisements/{id}/View/favorite', [AdvertisementController::class, 'addMyFavorite'])->name('addMyFavorite');
         Route::delete('/advertisements/{id}/View/favorite', [AdvertisementController::class, 'removeMyFavorite'])->name('removeMyFavorite');
-
+        Route::post('/advertisements/{id}/View/review', [AdvertisementController::class, 'reviewAdvertisement'])->name('reviewAdvertisement');
     });
     
     Route::middleware(['auth', 'checkUserTypes:1,2', 'checkContractStatus:accepted'])->group(function () {

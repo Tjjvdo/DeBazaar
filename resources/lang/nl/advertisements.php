@@ -46,4 +46,9 @@ return [
     'upload_button' => 'Upload',
     'add_to_favorites' => 'Toevoegen aan favorieten',
     'remove_from_favorites' => 'Verwijder uit favorieten',
+    'place_review' => 'Plaats review',
+    'create_review' => 'Maak een review',
+    'reviews' => 'Reviews',
+    'existing_reviews' => 'Bestaande reviews',
+    'no_reviews_yet' => 'Er zijn nog geen reviews'
 ];
