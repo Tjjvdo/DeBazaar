@@ -18,6 +18,11 @@ class Advertisement extends Model
         'inactive_at' => 'datetime',
     ];
 
+    public function advertiser()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function biddings()
     {
         return $this->hasMany(Bid::class);
@@ -36,5 +41,10 @@ class Advertisement extends Model
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
     }
 }

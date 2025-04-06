@@ -2,6 +2,7 @@
 
 return [
     'advertisements' => 'Advertenties',
+    'view_advertisement' => 'Advertentie bekijken',
     'advertisement' => 'Advertentie',
     'my_advertisements' => 'Mijn Advertenties',
     'purchase_history' => 'Aankoop Geschiedenis',
@@ -47,4 +48,17 @@ return [
     'upload_button' => 'Upload',
     'add_to_favorites' => 'Toevoegen aan favorieten',
     'remove_from_favorites' => 'Verwijder uit favorieten',
+    'place_review' => 'Plaats review',
+    'create_review' => 'Maak een review',
+    'reviews' => 'Reviews',
+    'existing_reviews' => 'Bestaande reviews',
+    'no_reviews_yet' => 'Er zijn nog geen reviews',
+    'advertiser' => 'Adverteerder',
+    'advertiser_reviews' => 'Adverteerder reviews',
+    'name' => 'Naam',
+    'email' => 'Email',
+    'joined_on' => 'Aangesloten op',
+    'amount_of_advertisements' => 'Aantal advertenties',
+    'seller_information' => 'Verkoper informatie',
+    'sold_by' => 'Verkocht door',
 ];
