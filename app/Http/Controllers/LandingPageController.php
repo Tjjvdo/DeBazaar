@@ -59,10 +59,12 @@ class LandingPageController extends Controller
             abort(403, 'Unauthorized');
         }
 
+        $requiresImage = $request->has('component_order') && in_array('image', (array) $request->component_order);
+
         $validated = $request->validate([
             'information_text' => 'nullable|string',
             'custom_url' => 'required|string|alpha_dash|unique:landing_pages,slug,' . $user->id . ',user_id',
-            'image' => 'nullable|image|max:2048',
+            'image' => ($requiresImage ? 'required|' : 'nullable|') . '|image|max:2048',
             'component_order' => 'required|array',
             'component_order.*' => 'in:information,image,advertisements',
             'color' => 'nullable|string|size:7',
