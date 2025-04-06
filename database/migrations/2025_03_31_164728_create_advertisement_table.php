@@ -15,12 +15,10 @@ return new class extends Migration {
             $table->string('title');
             $table->double('price');
             $table->mediumText('information');
-            $table->integer('advertiser_id');
+            $table->foreignId('advertiser_id')->constrained('users')->onDelete('cascade');
             $table->boolean('is_rentable')->default(false);
             $table->timestamp('created_at');
             $table->timestamp('inactive_at')->nullable();
-
-            $table->foreign('advertiser_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('bid', function (Blueprint $table) {
@@ -54,9 +52,16 @@ return new class extends Migration {
         });
 
         Schema::create('product_review', function (Blueprint $table) {
-            $table-> id();
+            $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('advertisement_id')->constrained('advertisement')->onDelete('cascade');
+            $table->mediumText('review');
+        });
+
+        Schema::create('advertiser_review', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('reviewer_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('advertiser_id')->constrained('users')->onDelete('cascade');
             $table->mediumText('review');
         });
     }

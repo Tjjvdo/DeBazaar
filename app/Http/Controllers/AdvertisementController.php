@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
 use App\Models\AdvertisementRelated;
+use App\Models\AdvertiserReview;
 use App\Models\Bid;
 use App\Models\Favorite;
 use App\Models\ProductReview;
 use App\Models\Renting;
+use App\Models\User;
 use App\View\Components\Advertisment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -177,7 +179,7 @@ class AdvertisementController extends Controller
 
     public function getSingleProduct($id)
     {
-        $advertisement = Advertisement::where("id", $id)->first();
+        $advertisement = Advertisement::where("id", $id)->with('advertiser')->first();
 
         if ($advertisement->is_rentable) {
             $today = date('Y-m-d');
@@ -418,5 +420,29 @@ class AdvertisementController extends Controller
         );
 
         return Redirect::route('viewAdvertisement', $id);
+    }
+
+    public function getAdvertiserReviews($id)
+    {
+        $advertiser = User::where('id', $id)->first();
+
+        $reviews = AdvertiserReview::where('advertiser_id', $id)->with('advertiser')->get();
+
+        $amountOfAdvertisements = Advertisement::where('advertiser_id', $id)->count();
+
+        return view('advertiserReviews', compact('advertiser', 'reviews', 'amountOfAdvertisements'));
+    }
+
+    public function postAdvertiserReview($id, Request $request)
+    {
+        AdvertiserReview::create(
+            [
+                'reviewer_id' => Auth::user()->id,
+                'advertiser_id' => $id,
+                'review' => $request->input("review"),
+            ]
+        );
+
+        return Redirect::route('getAdvertiserReviews', $id);
     }
 }

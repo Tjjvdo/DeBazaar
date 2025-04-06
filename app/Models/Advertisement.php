@@ -15,6 +15,11 @@ class Advertisement extends Model
         'inactive_at' => 'datetime',
     ];
 
+    public function advertiser()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function biddings()
     {
         return $this->hasMany(Bid::class);

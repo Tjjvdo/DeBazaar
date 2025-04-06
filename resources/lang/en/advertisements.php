@@ -2,6 +2,7 @@
 
 return [
     'advertisements' => 'Advertisements',
+    'view_advertisement' => 'View advertisement',
     'advertisement' => 'Advertisement',
     'my_advertisements' => 'My Advertisements',
     'purchase_history' => 'Purchase History',
@@ -51,5 +52,13 @@ return [
     'create_review' => 'Make a review',
     'reviews' => 'Reviews',
     'existing_reviews' => 'Existing reviews',
-    'no_reviews_yet' => 'There are no reviews yet'
+    'no_reviews_yet' => 'There are no reviews yet',
+    'advertiser' => 'Advertiser',
+    'advertiser_reviews' => 'Advertiser reviews',
+    'name' => 'Name',
+    'email' => 'Email',
+    'joined_on' => 'Joined on',
+    'amount_of_advertisements' => 'Amount of advertisements',
+    'seller_information' => 'Advertiser information',
+    'sold_by' => 'Sold by',
 ];

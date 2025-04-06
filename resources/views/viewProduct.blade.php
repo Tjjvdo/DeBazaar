@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Advertentie bekijken') }}
+            {{ __('advertisements.view_advertisement') }}
         </h2>
     </x-slot>
 
@@ -22,6 +22,13 @@
                             <x-slot:created_at>{{ $advertisement->created_at->format('d-m-Y H:i') }}</x-slot:created_at>
                             <x-slot:id>{{ $advertisement->id }}</x-slot:id>
                         </x-advertisement>
+
+                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                            {{ __('advertisements.sold_by') }}:
+                            <a href="{{ route('getAdvertiserReviews', $advertisement->advertiser_id) }}" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+                                {{ $advertisement->advertiser->name }}
+                            </a>
+                        </p>
                     </div>
 
                     <div class="p-6 text-gray-900 dark:text-gray-100">

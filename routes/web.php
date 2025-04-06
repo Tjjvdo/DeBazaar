@@ -60,6 +60,8 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::post('/advertisements/{id}/View/favorite', [AdvertisementController::class, 'addMyFavorite'])->name('addMyFavorite');
         Route::delete('/advertisements/{id}/View/favorite', [AdvertisementController::class, 'removeMyFavorite'])->name('removeMyFavorite');
         Route::post('/advertisements/{id}/View/review', [AdvertisementController::class, 'reviewAdvertisement'])->name('reviewAdvertisement');
+        Route::get('/advertisers/{id}/reviews', [AdvertisementController::class, 'getAdvertiserReviews'])->name('getAdvertiserReviews');
+        Route::post('/advertisers/{id}/reviews', [AdvertisementController::class, 'postAdvertiserReview'])->name('postAdvertiserReview');
     });
     
     Route::middleware(['auth', 'checkUserType:2', 'checkContractStatus:accepted'])->group(function () {
