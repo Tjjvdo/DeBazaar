@@ -78,6 +78,8 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::get('/rentOutSchedule', [AdvertisementController::class, 'rentalCalendar'])->name('rentalCalendar');
         Route::post('/advertisements/{id}/UpdateRelations', [AdvertisementController::class, 'addRelationToProduct'])->name('postUpdateAdvertisementRelation');
         Route::post('/newAdvertisement/uploadCSV', [AdvertisementController::class, 'uploadAdvertisementsCSV'])->name('uploadAdvertisementsCSV');
+        Route::post('/advertisements/{id}/Update/addWearSettings', [AdvertisementController::class, 'addWearSettings'])->name('addWearSettings');
+        Route::post('/advertisements/{id}/Update/returnRental', [AdvertisementController::class, 'returnRental'])->name('returnRental');
     });
 });
 
