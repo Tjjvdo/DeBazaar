@@ -26,7 +26,7 @@
                             <label for="price"
                                 class="block text-lg font-medium text-gray-700 dark:text-gray-300">{{ __('advertisements.price_input') }}</label>
                             <div class="mt-2">
-                                <input type="text" id="price" name="price"
+                                <input type="number" id="price" name="price"
                                     class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-lg border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 p-2"
                                     value="{{$advertisement->price}}">
                             </div>
@@ -47,8 +47,35 @@
                                 {{ __('advertisements.update_button') }}
                             </button>
                         </div>
-
                     </form>
+
+                    @if (!$wearsettings && $advertisement->is_rentable)
+                    <div class="mt-8">
+                        <form action="{{ route('addWearSettings', $advertisement->id) }}" method="post" class="space-y-6">
+                            @csrf
+
+                            <div>
+                                <label for="investmentAmount"
+                                    class="block text-lg font-medium text-gray-700 dark:text-gray-300">{{ __('advertisements.investment_amount_input') }}</label>
+                                <input type="number" id="investmentAmount" name="investmentAmount" min="1"
+                                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-lg border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 p-2">
+                            </div>
+
+                            <div>
+                                <label for="durability">{{ __('advertisements.durable_days') }}</label>
+                                <input type="number" id="durability" name="durability" min="1"
+                                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-lg border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 p-2">
+                            </div>
+
+                            <div>
+                                <button type="submit"
+                                    class="inline-flex justify-center py-3 px-6 border shadow-sm text-lg font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                    {{ __('advertisements.add_wear_settings') }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    @endif
 
                     <div class="mt-8">
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">{{ __('advertisements.related_advertisements') }}</h2>

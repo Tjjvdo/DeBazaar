@@ -61,4 +61,11 @@ return [
     'amount_of_advertisements' => 'Amount of advertisements',
     'seller_information' => 'Advertiser information',
     'sold_by' => 'Sold by',
+    'investment_amount_input' => 'Investment amount',
+    'durable_days' => 'Amount of days it is durable',
+    'add_wear_settings' => 'Add wear settings',
+    'already_rented' => 'You have already rented this item starting from',
+    'wear_costs' => 'The wear costs are',
+    'return_image' => 'Image of rental',
+    'return_rental' => 'Return rental',
 ];

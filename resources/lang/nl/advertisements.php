@@ -61,4 +61,11 @@ return [
     'amount_of_advertisements' => 'Aantal advertenties',
     'seller_information' => 'Verkoper informatie',
     'sold_by' => 'Verkocht door',
+    'investment_amount_input' => 'Geïnvesteerd bedrag',
+    'durable_days' => 'Aantal dagen dat het gebruikt kan worden',
+    'add_wear_settings' => 'Voeg slijtage opties toe',
+    'already_rented' => 'Je hebt dit item al gehuurd vanaf',
+    'wear_costs' => 'De slijtage kosten zijn',
+    'return_image' => 'Afbeelding van verhuur',
+    'return_rental' => 'Verhuur retourneren',
 ];

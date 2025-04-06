@@ -10,7 +10,9 @@ use App\Models\Favorite;
 use App\Models\ProductReview;
 use App\Models\Renting;
 use App\Models\User;
+use App\Models\WearSetting;
 use App\View\Components\Advertisment;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -182,17 +184,19 @@ class AdvertisementController extends Controller
         $advertisement = Advertisement::where("id", $id)->with('advertiser')->first();
 
         if ($advertisement->is_rentable) {
-            $today = date('Y-m-d');
+            $today = Carbon::now();
             $tomorrow = date('Y-m-d', strtotime('+1 day'));
             $maxDate = $advertisement->inactive_at->format('Y-m-d');
             $bidding = null;
             $reviews = ProductReview::where('advertisement_id', $id)->with('user')->get();
+            $renting = Renting::where('advertisement_id', $id)->where('renter_id', Auth::user()->id)->where('return_date', null)->first();
         } else {
             $bidding = Bid::where('advertisement_id', $id)->first();
             $today = null;
             $tomorrow = null;
             $maxDate = null;
             $reviews = null;
+            $renting = null;
         }
 
         $relatedAdvertisements = AdvertisementRelated::where("advertisement_id", $id)->with('relatedAdvertisement')->get();
@@ -202,7 +206,7 @@ class AdvertisementController extends Controller
         $isFavorite = $favorited ? true : false;
         $amountOfBids = $this->getAmountOfBids();
 
-        return view("viewProduct", compact('advertisement', 'reviews', 'today', 'tomorrow', 'maxDate', 'bidding', 'amountOfBids', 'relatedAdvertisements', 'isFavorite'));
+        return view("viewProduct", compact('advertisement', 'reviews', 'today', 'tomorrow', 'maxDate', 'bidding', 'amountOfBids', 'relatedAdvertisements', 'isFavorite', 'renting'));
     }
 
     public function getUpdateSingleProduct($id)
@@ -216,7 +220,9 @@ class AdvertisementController extends Controller
 
         $advertisements = Advertisement::where('advertiser_id', Auth::user()->id)->whereNotIn('id', $existingRelatedIds)->get();
 
-        return view("updateAdvertisement", compact('advertisement', 'relatedAdvertisements', 'advertisements'));
+        $wearsettings = WearSetting::where('advertisement_id', $id)->first();
+
+        return view("updateAdvertisement", compact('advertisement', 'relatedAdvertisements', 'advertisements', 'wearsettings'));
     }
 
     public function postUpdateSingleProduct($id, Request $request)
@@ -439,10 +445,49 @@ class AdvertisementController extends Controller
             [
                 'reviewer_id' => Auth::user()->id,
                 'advertiser_id' => $id,
-                'review' => $request->input("review"),
+                'review' => $request->input('review'),
             ]
         );
 
         return Redirect::route('getAdvertiserReviews', $id);
+    }
+
+    public function addWearSettings($id, Request $request)
+    {
+        WearSetting::create(
+            [
+                'advertisement_id' => $id,
+                'investment_amount' => $request->input('investmentAmount'),
+                'days_durable' => $request->input('durability'),
+            ]
+        );
+
+        return Redirect::route('getUpdateAdvertisement', $id);
+    }
+
+    public function returnRental($id, Request $request)
+    {
+        $renting = Renting::where('advertisement_id', $id)->where('renter_id', Auth::user()->id)->where('return_date', null)->first();
+
+        $image = $request->file('img_url');
+        $filename = 'return_' . time() . '_' . $image->getClientOriginalName();
+        $path = $image->storeAs('returns', $filename, 'public');
+        $renting->image_path = $path;
+
+        $renting->return_date = Carbon::now();
+        $renting->save();
+
+        $daysUsed = Carbon::parse($renting->start_date)->diffInDays(Carbon::now()) + 1;
+
+        $wearsettings = WearSetting::where('advertisement_id', $id)->first();
+
+        if ($wearsettings && $wearsettings->days_durable > 0 && isset($wearsettings->investment_amount)) {
+            $usedPart = $daysUsed / $wearsettings->days_durable;
+            $cost = round($usedPart * $wearsettings->investment_amount, 2);
+        } else {
+            $cost = 0;
+        }
+
+        return redirect()->back()->with('warning', __('advertisements.wear_costs') . ': ' . $cost);
     }
 }
