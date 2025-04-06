@@ -28,6 +28,7 @@ abstract class DuskTestCase extends BaseTestCase
         parent::setUp();
 
         Artisan::call('migrate:fresh');
+        Artisan::call('db:seed');
     }
 
     /**

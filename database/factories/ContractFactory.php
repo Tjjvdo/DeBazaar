@@ -26,9 +26,9 @@ class ContractFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(), // Associate a user with this contract
-            'pdf_path' => fake()->url(),
-            'status' => 'pending', // Default status
+            'user_id' => User::factory(),
+            'pdf_path' => '',
+            'status' => 'pending',
         ];
     }
 

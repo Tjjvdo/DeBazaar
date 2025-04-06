@@ -37,13 +37,32 @@ class UserFactory extends Factory
     /**
      * State for a business account with an accepted contract.
      */
-    public function businessAdvertiser(): static
+    public function businessAdvertiserAccepted(): static
     {
         return $this->state(fn (array $attributes) => [
             'user_type' => 2,
         ])->has(Contract::factory()->accepted());
     }
 
+    /**
+     * State for a business account with an pending contract.
+     */
+    public function businessAdvertiserPending(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'user_type' => 2,
+        ])->has(Contract::factory());
+    }
+
+    /**
+     * State for an owner account
+     */
+    public function owner(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'user_type' => 3,
+        ]);
+    }
 
     /**
      * Indicate that the model's email address should be unverified.
