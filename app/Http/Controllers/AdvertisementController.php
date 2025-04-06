@@ -165,16 +165,34 @@ class AdvertisementController extends Controller
         }
     }
 
-    public function getAdvertisements()
+    public function getAdvertisements(Request $request)
     {
-        $advertisements = Advertisement::where('inactive_at', '>', now())->get();
+        $query = Advertisement::where('inactive_at', '>', now());
+
+        if ($request->has('title') && !empty($request->title)) {
+            $query->where('title', 'like', '%' . $request->title . '%');
+        }
+    
+        if ($request->has('price_min') && is_numeric($request->price_min)) {
+            $query->where('price', '>=', $request->price_min);
+        }
+    
+        if ($request->has('price_max') && is_numeric($request->price_max)) {
+            $query->where('price', '<=', $request->price_max);
+        }
+    
+        if ($request->has('is_rentable') && in_array($request->is_rentable, ['0', '1'])) {
+            $query->where('is_rentable', $request->is_rentable);
+        }
+
+        $advertisements = $query->paginate(3)->withQueryString();
 
         return view("advertisementList", ["advertisements" => $advertisements, "title" => "Advertisements"]);
     }
 
     public function getMyAdvertisements()
     {
-        $advertisements = Advertisement::where("advertiser_id", Auth::user()->id)->where('inactive_at', '>', now())->get();
+        $advertisements = Advertisement::where("advertiser_id", Auth::user()->id)->where('inactive_at', '>', now())->paginate(3);
 
         return view("advertisementList", ["advertisements" => $advertisements, "title" => "My advertisements"]);
     }
@@ -188,7 +206,7 @@ class AdvertisementController extends Controller
             $tomorrow = date('Y-m-d', strtotime('+1 day'));
             $maxDate = $advertisement->inactive_at->format('Y-m-d');
             $bidding = null;
-            $reviews = ProductReview::where('advertisement_id', $id)->with('user')->get();
+            $reviews = ProductReview::where('advertisement_id', $id)->with('user')->paginate(3);
             $renting = Renting::where('advertisement_id', $id)->where('renter_id', Auth::user()->id)->where('return_date', null)->first();
         } else {
             $bidding = Bid::where('advertisement_id', $id)->first();
@@ -380,7 +398,7 @@ class AdvertisementController extends Controller
 
         $biddedAdvertisementIds = $biddedAdvertisements->pluck('advertisement_id')->toArray();
 
-        $advertisements = Advertisement::where('inactive_at', '<', now())->whereIn('id', $biddedAdvertisementIds)->get();
+        $advertisements = Advertisement::where('inactive_at', '<', now())->whereIn('id', $biddedAdvertisementIds)->paginate(3);
 
         return view("advertisementList", ["advertisements" => $advertisements, "title" => "PurchaseHistory"]);
     }
@@ -391,7 +409,7 @@ class AdvertisementController extends Controller
 
         $advertisementIds = $favorites->pluck('advertisement_id')->toArray();
 
-        $advertisements = Advertisement::whereIn('id', $advertisementIds)->get();
+        $advertisements = Advertisement::whereIn('id', $advertisementIds)->paginate(3);
 
         return view("advertisementList", ["advertisements" => $advertisements, "title" => "Favorites"]);
     }
@@ -432,7 +450,7 @@ class AdvertisementController extends Controller
     {
         $advertiser = User::where('id', $id)->first();
 
-        $reviews = AdvertiserReview::where('advertiser_id', $id)->with('advertiser')->get();
+        $reviews = AdvertiserReview::where('advertiser_id', $id)->with('advertiser')->paginate(3);
 
         $amountOfAdvertisements = Advertisement::where('advertiser_id', $id)->count();
 

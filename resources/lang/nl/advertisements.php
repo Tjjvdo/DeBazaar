@@ -6,6 +6,7 @@ return [
     'advertisement' => 'Advertentie',
     'my_advertisements' => 'Mijn Advertenties',
     'purchase_history' => 'Aankoop Geschiedenis',
+    'favorites' => 'Favorieten',
     'advertisement_update' => 'Update advertentie',
     'advertisement_create' => 'Nieuwe advertentie aanmaken',
     'product' => 'Product: ',
@@ -68,4 +69,12 @@ return [
     'wear_costs' => 'De slijtage kosten zijn',
     'return_image' => 'Afbeelding van verhuur',
     'return_rental' => 'Verhuur retourneren',
+    'filter_title' => 'Filter titel',
+    'min_price' => 'Minimale prijs',
+    'rentable' => 'Verhuur',
+    'all' => 'Allemaal',
+    'yes' => 'Ja',
+    'no' => 'Nee',
+    'filter' => 'Filteren',
+    'reset_filter' => 'Reset filteren'
 ];
