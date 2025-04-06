@@ -6,6 +6,8 @@
                 {{ __('advertisements.advertisements') }}
                 @elseif ($title === 'My advertisements')
                 {{ __('advertisements.my_advertisements') }}
+                @elseif($title === 'PurchaseHistory')
+                {{ __('advertisements.purchase_history') }}
                 @endif
             </h2>
 

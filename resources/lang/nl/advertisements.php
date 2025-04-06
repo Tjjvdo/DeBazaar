@@ -3,7 +3,8 @@
 return [
     'advertisements' => 'Advertenties',
     'advertisement' => 'Advertentie',
-    'my_advertisements' => 'Mijn advertenties',
+    'my_advertisements' => 'Mijn Advertenties',
+    'purchase_history' => 'Aankoop Geschiedenis',
     'advertisement_update' => 'Update advertentie',
     'advertisement_create' => 'Nieuwe advertentie aanmaken',
     'product' => 'Product: ',
