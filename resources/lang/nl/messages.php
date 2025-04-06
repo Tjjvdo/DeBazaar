@@ -15,4 +15,11 @@ return [
     'renting_schedule' => 'Verhuur overzicht',
     'language' => 'nl',
     'customer_schedule' => 'Huur overzicht',
+    'csv_invalid_row_structure' => 'De CSV structuur is incorrect',
+    'max_advertisements_reached_csv' => 'De CSV bevat te veel advertenties, niet toegevoegde advertentie: :title',
+    'csv_upload_success_all' => 'Alle :count advertenties in de CSV zijn succesvol geüpload',
+    'csv_upload_partial' => ':uploaded van de :total advertenties in de CSV zijn succesvol geüpload',
+    'csv_validation_error' => 'Fout bij advertentie ":title": :error',
+    'purchaseHistory' => 'Koop geschiedenis',
+    'favorites' => 'Favorieten',
 ];

@@ -39,5 +39,11 @@ return [
     'add_relation' => 'Relatie toevoegen',
     'select_related_advertisement' => 'Selecteer een geralareede advertentie',
     'no_related_advertisements' => 'Er zijn geen gerelateerde relaties',
-    'no_relation_advertisements' => 'Er zijn geen advertenties om mee te koppelen'
+    'no_relation_advertisements' => 'Er zijn geen advertenties om mee te koppelen',
+    'upload_csv_advertisements' => 'Advertenties uploaden via CSV',
+    'csv_file_label' => 'CSV-bestand',
+    'csv_file_instructions' => 'Selecteer een CSV-bestand met de kolommen: title, price, information, is_rentable (true/false). De eerste rij moet de kolomkoppen bevatten.',
+    'upload_button' => 'Upload',
+    'add_to_favorites' => 'Toevoegen aan favorieten',
+    'remove_from_favorites' => 'Verwijder uit favorieten',
 ];
