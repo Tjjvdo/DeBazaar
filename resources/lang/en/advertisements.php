@@ -3,7 +3,8 @@
 return [
     'advertisements' => 'Advertisements',
     'advertisement' => 'Advertisement',
-    'my_advertisements' => 'My advertisements',
+    'my_advertisements' => 'My Advertisements',
+    'purchase_history' => 'Purchase History',
     'advertisement_update' => 'Update advertisement',
     'advertisement_create' => 'Create new advertisement',
     'product' => 'Product: ',
