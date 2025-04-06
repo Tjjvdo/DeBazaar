@@ -21,14 +21,29 @@ class LandingPageController extends Controller
         return view('landingpage.my-landingpage', compact('landingPage', 'order'));
     }
 
-    public function show($slug)
+    public function show($slug, Request $request)
     {
         $landingPage = LandingPage::where('slug', $slug)->firstOrFail();
-        $ads = Advertisement::where('advertiser_id', $landingPage->user_id)
-            ->where(function($query) {
-                $query->whereNull('inactive_at')
-                    ->orWhere('inactive_at', '>', now());
-            })->get();
+
+        $query = Advertisement::where('inactive_at', '>', now());
+
+        if ($request->has('title') && !empty($request->title)) {
+            $query->where('title', 'like', '%' . $request->title . '%');
+        }
+
+        if ($request->has('price_min') && is_numeric($request->price_min)) {
+            $query->where('price', '>=', $request->price_min);
+        }
+
+        if ($request->has('price_max') && is_numeric($request->price_max)) {
+            $query->where('price', '<=', $request->price_max);
+        }
+
+        if ($request->has('is_rentable') && in_array($request->is_rentable, ['0', '1'])) {
+            $query->where('is_rentable', $request->is_rentable);
+        }
+
+        $ads = $query->paginate(3)->withQueryString();
 
         return view('landingpage.show', [
             'landingPage' => $landingPage,
@@ -56,13 +71,13 @@ class LandingPageController extends Controller
         if (count(array_unique($validated['component_order'])) !== count($validated['component_order'])) {
             return back()->withErrors(['component_order' => 'Each component must be selected only once.']);
         }
-        
+
         if (count($validated['component_order']) < 1 || count($validated['component_order']) > 3) {
             return back()->withErrors(['component_order' => 'You must select between 1 and 3 components.']);
         }
 
         $landingPage = LandingPage::where('user_id', $user->id)->first();
-        
+
         if (!$landingPage) {
             $landingPage = new LandingPage();
             $landingPage->user_id = $user->id;
@@ -79,7 +94,7 @@ class LandingPageController extends Controller
 
             $imagePath = $request->file('image')->store('landingpage-images', 'public');
         }
-        
+
         $landingPage->slug = $validated['custom_url'];
         $landingPage->info_content = $validated['information_text'];
         $landingPage->color = $validated['color'] ?? '#ffffff';

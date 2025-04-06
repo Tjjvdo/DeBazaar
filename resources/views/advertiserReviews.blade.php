@@ -56,6 +56,10 @@
                                 </li>
                                 @endforeach
                             </ul>
+
+                            <div class="mt-4">
+                                {{ $reviews->links() }}
+                            </div>
                             @else
                             <p class="text-gray-600 dark:text-gray-400">{{ __('advertisements.no_reviews_yet') }}</p>
                             @endif

@@ -37,6 +37,8 @@ return new class extends Migration {
             $table->foreignId('renter_id')->constrained('users')->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date');
+            $table->date('return_date')->nullable();
+            $table->string('image_path')->nullable();
         });
 
         Schema::create('advertisement_related', function (Blueprint $table) {
@@ -64,6 +66,13 @@ return new class extends Migration {
             $table->foreignId('advertiser_id')->constrained('users')->onDelete('cascade');
             $table->mediumText('review');
         });
+
+        Schema::create('wear_setting', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('advertisement_id')->constrained('advertisement')->onDelete('cascade');
+            $table->integer('investment_amount');
+            $table->integer('days_durable');
+        });
     }
 
     /**
@@ -77,5 +86,7 @@ return new class extends Migration {
         Schema::dropIfExists('advertisement_related');
         Schema::dropIfExists('favorite');
         Schema::dropIfExists('product_review');
+        Schema::dropIfExists('advertiser_review');
+        Schema::dropIfExists('wear_setting');
     }
 };
