@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Contract;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -29,8 +30,20 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'user_type' => 1, // Default to customer type
         ];
     }
+
+    /**
+     * State for a business account with an accepted contract.
+     */
+    public function businessAdvertiser(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'user_type' => 2,
+        ])->has(Contract::factory()->accepted());
+    }
+
 
     /**
      * Indicate that the model's email address should be unverified.
