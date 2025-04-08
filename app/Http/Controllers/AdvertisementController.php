@@ -153,9 +153,13 @@ class AdvertisementController extends Controller
                 }
 
                 if ($uploadedCount == iterator_count($records)) {
-                    return Redirect::route('getMyAdvertisements')->with('success', __('messages.csv_upload_success_all', ['count' => $uploadedCount]));
+                    return Redirect::route('getMyAdvertisements')
+                    ->with('success', __('messages.csv_upload_success_all', ['count' => $uploadedCount]));
                 } elseif ($uploadedCount > 0) {
-                    return Redirect::route('getMyAdvertisements')->with('warning', __('messages.csv_upload_partial', ['uploaded' => $uploadedCount, 'total' => iterator_count($records)]))->withErrors($errorMessages);
+                    return Redirect::route('getMyAdvertisements')
+                    ->with('warning', __('messages.csv_upload_partial', 
+                    ['uploaded' => $uploadedCount, 'total' => iterator_count($records)]))
+                    ->withErrors($errorMessages);
                 } else {
                     return Redirect::back()->withErrors($errorMessages);
                 }
