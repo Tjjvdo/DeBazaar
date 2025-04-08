@@ -23,11 +23,10 @@ return new class extends Migration {
 
         Schema::create('bid', function (Blueprint $table) {
             $table->id();
-            $table->integer('advertisement_id');
+            $table->foreignId('advertisement_id')->constrained('advertisement')->onDelete('cascade');
             $table->integer('bidder_id')->nullable();
             $table->integer('bid_amount');
 
-            $table->foreign('advertisement_id')->references('id')->on('advertisement')->onDelete('cascade');
             $table->foreign('bidder_id')->references('id')->on('users')->onDelete('cascade');
         });
 

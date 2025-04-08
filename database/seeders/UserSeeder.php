@@ -14,20 +14,20 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Platform Owner',
-            'email' => 'owner@example.com',
+            'name' => 'Alice Smith',
+            'email' => 'alice.smith@platform.com',
             'password' => Hash::make('securepassword123'),
-            'phone_number' => '1234567890',
+            'phone_number' => '0612345678',
             'user_type' => 3, // Platform Owner
         ]);
-
+    
         // Adding a second user (Business Advertiser)
         User::create([
-            'name' => 'Business Advertiser',
-            'email' => 'Business@example.com',
+            'name' => 'Acme Corp Ads',
+            'email' => 'ads@acmecorp.nl',
             'password' => Hash::make('businesspassword123'),
-            'phone_number' => '0987654321',
-            'user_type' => 2, // Buisiness Advertiser
+            'phone_number' => '0698765432',
+            'user_type' => 2, // Business Advertiser
         ]);
 
         // Adding a third user (Customer Advertizer)
@@ -41,10 +41,10 @@ class UserSeeder extends Seeder
 
         // Adding a fourth user (Customer)
         User::create([
-            'name' => 'Customer',
-            'email' => 'customer@example.com',
+            'name' => 'Ingrid de Vries',
+            'email' => 'ingrid.v@provider.net',
             'password' => Hash::make('customerRpassword123'),
-            'phone_number' => '6677889900',
+            'phone_number' => '0655667788',
             'user_type' => 0, // Customer
         ]);
     }
