@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'welcome' => 'Welkom op onze website!',
+    'dashboard' => 'Dashboard',
+    'shop' => 'Winkel',
+    'pending_contract' => 'Contract Accepteren',
+    'my_ads' => 'Mijn Advertenties',
+    'new_ad' => 'Nieuwe Advertentie',
+    'business_contracts' => 'Zakelijke Contracten',
+    'profile' => 'Profiel',
+    'log_in' => 'Inloggen',
+    'log_out' => 'Uitloggen',
+    'register' => 'Registreren',
+    'my_landingpage' => 'Mijn Landingspagina',
+    'renting_schedule' => 'Verhuur overzicht',
+    'language' => 'nl',
+    'customer_schedule' => 'Huur overzicht',
+    'csv_invalid_row_structure' => 'De CSV structuur is incorrect',
+    'max_advertisements_reached_csv' => 'De CSV bevat te veel advertenties, niet toegevoegde advertentie: :title',
+    'csv_upload_success_all' => 'Alle :count advertenties in de CSV zijn succesvol geüpload',
+    'csv_upload_partial' => ':uploaded van de :total advertenties in de CSV zijn succesvol geüpload',
+    'csv_validation_error' => 'Fout bij advertentie ":title": :error',
+    'purchaseHistory' => 'Koop geschiedenis',
+    'favorites' => 'Favorieten',
+];
